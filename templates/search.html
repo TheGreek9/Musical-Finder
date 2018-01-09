@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block main %}
+<h1 align="center">Tune Finder!</h1>
+<div class="container" id="outer_container">
+    <div class="row">
+            <div class="hello">
+            <form autocomplete="off" method="post">
+                <fieldset>
+                  <h4>What are you auditioning for?</h4>
+                    <div class="form-group">
+                        <label class="sr-only" for="q">Musical</label>
+                        <input class="form-control" id="search" name="musical" placeholder="Musical" type="text"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="sel1">Roles:</label>
+                        <select class="form-control" id="sel" name="role"></select>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                          <label><input type="checkbox" name="musicalSongs" checked>Musical Theater Songs</label>
+                        </div>
+                        <div class="checkbox">
+                          <label><input type="checkbox" name="nonMusicalSongs" checked>Non-Musical Theater Songs</label>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+            </div>
+    </div>
+</div>
+{% endblock %}

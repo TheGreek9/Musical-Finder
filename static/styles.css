@@ -1,0 +1,75 @@
+/* stylize typeahead.js a la http://twitter.github.io/typeahead.js/css/examples.css */
+.tt-menu
+{
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 1px;
+    max-height: 150px;
+    overflow-y: auto;
+    width: 350px;
+}
+.tt-input
+{
+  width:350px;
+}
+.tt-suggestion.tt-cursor {
+    background-color: #0097cf;
+    color: #fff;
+    cursor: pointer;
+}
+.tt-suggestion {
+    margin: 0 auto;
+    padding: 6px 12px;
+}
+
+.row {
+    text-align: center;
+}
+
+.hello {
+    width: 25em;
+    margin: 0 auto;
+    text-align: left;
+}
+
+body {
+    background-image: url("https://static.pexels.com/photos/164821/pexels-photo-164821.jpeg");
+    min-height: 500px;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+h1, h2, h3, h4, p {
+    color: white;
+}
+
+label {
+    color: white;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+caption {
+  background-color: #ffffff;
+  text-align: center;
+}
+
+td, th {
+    border: 1px solid #000000;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+tr:nth-child(odd) {
+    background-color: #ffffff;
+}

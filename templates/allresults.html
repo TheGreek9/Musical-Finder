@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block main %}
+<table>
+  <tr>
+    <th>Musical</th>
+    <th>Song Title</th>
+    <th>Singer/Artist</th>
+    <th>Original Musical</th>
+    <th>Composer</th>
+    <th>Genre</th>
+    <th>Musical/Non Musical</th>
+    <th>Role</th>
+    <th>Spotify Preview</th>
+  </tr>
+  {% for song in songList %}
+  <tr>
+    <td>{{song.musical}}</td>
+    <td>{{song.song_title}}</td>
+    <td>{{song.singerArtist}}</td>
+    <td>{{song.original_musical}}</td>
+    <td>{{song.composer}}</td>
+    <td>{{song.genre}}</td>
+    <td>{{song.musicalNon}}</td>
+    <td>{{song.role}}</td>
+    <td>
+    {% if song.spotifyPrev %}
+      <audio id="myAudio" controls>
+        <source src="{{song.spotifyPrev}}">
+        Your browser does not support the audio element.
+      </audio>
+    {% else %}
+      None
+    {% endif%}
+    </td>
+  </tr>
+  {% endfor %}
+  </table>
+  <div class="row">
+    <p>Don't see the song you were thinking of? Add it to our database!</p>
+    <a href="{{ url_for('newSong')}}" class="btn btn-default">Add Song</a>
+  </div>
+{% endblock %}

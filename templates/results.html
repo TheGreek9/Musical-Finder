@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+{% block main %}
+<div class="container-fluid">
+  {% for info in musicalList %}
+          <p>Musical: <strong id="resultsMusical">{{info.musical}}</strong></p>
+          <p>Playwright: <strong>{{info.playwright}}</strong></p>
+          <p>Composer: <strong>{{info.composer}}</strong></p>
+          <p>Genre: <strong>{{info.genre}}</strong></p>
+          <p>Lyricist: <strong>{{info.lyricist}}</strong></p>
+          <p>Plot: {{info.plot}}</p>
+  {% endfor %}
+</div>
+<table style="width:100%">
+  <caption>
+    {% if pickedRole %}
+      Suggested Songs for {{pickedRole}}
+    {% else %}
+      Suggested Songs for All Roles
+    {% endif %}
+  </caption>
+  <tr>
+    <th>Song Title</th>
+      <th>Singer/Artist</th>
+      <th>Original Musical</th>
+      <th>Composer</th>
+      <th>Genre</th>
+      <th>Musical/Non Musical</th>
+      {% if not pickedRole %}
+      <th>Role</th>
+      {% endif %}
+      <th>Spotify Preview</th>
+    </tr>
+    {% for song in songList %}
+    <tr>
+      <td>{{song.song_title}}</td>
+      <td>{{song.singerArtist}}</td>
+      <td>{{song.original_musical}}</td>
+      <td>{{song.composer}}</td>
+      <td>{{song.genre}}</td>
+      <td>{{song.musicalNon}}</td>
+      {% if not pickedRole %}
+        <td>{{song.role}}</td>
+      {% endif %}
+      <td>
+      {% if song.spotifyPrev %}
+        <audio id="myAudio" controls>
+          <source src="{{song.spotifyPrev}}">Your browser does not support the audio element.
+        </audio>
+      {% else %}
+        None
+      {% endif %}
+      </td>
+      </tr>
+    {% endfor %}
+  </table>
+  <br>
+  <br>
+    <div class="row">
+      <p>Don't see the song you were thinking of? Add it to our database!  <a href="{{ url_for('newSong')}}" onclick='passMusical()' class="btn btn-default">Add Song</a></p>
+    </div>
+</div>
+{% endblock %}

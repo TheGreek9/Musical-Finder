@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% block main %}
+<div class="container" id="outer_container">
+  <form autocomplete="off" method="post">
+    <fieldset>
+      <table style="width:100%">
+        <tr>
+          <th></th>
+          <th>Song Title</th>
+          <th>Musical Id</th>
+          <th>Role</th>
+          <th>Singer/Artist</th>
+          <th>Genre</th>
+          <th>Original Musical</th>
+          <th>Composer</th>
+          <th>Sheet Music</th>
+          <th>Spotify Id</th>
+          <th>Musical/Non Musical</th>
+          <th></th>
+        </tr>
+        {% for song in songList %}
+        <tr>
+          <td><input type="checkbox" name="checking" value="{{song.songId}}"></td>
+          <td><strong>{{song.song_title}}</strong></td>
+          <td><strong>{{song.musical}}</strong></td>
+          <td><strong>{{song.role}}</strong></td>
+          <td><strong>{{song.singerArtist}}</strong></td>
+          <td><strong>{{song.genre}}</strong></td>
+          <td><strong>{{song.original_musical}}</strong></td>
+          <td><strong>{{song.composer}}</strong></td>
+          <td><strong>{{song.sheet_music}}</strong></td>
+          <td><strong>{{song.spotifyId}}</strong></td>
+          <td><strong>{{song.musicalNon}}</strong></td>
+          <td>
+            <a href="{{url_for('getspotifyinfo', track=song.song_title, artist=song.singerArtist, id=song.songId)}}" class="btn btn-default">Choose ID</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+      <br><br>
+        <div class="row">
+          <div class="col-md-offset-4 col-md-2">
+            <a href="{{url_for('index')}}" class="btn btn-primary">Go Back</a>
+          </div>
+          <div class="col-md-2">
+              <button class="btn btn-primary" name="Add" type="submit">Add</button>
+          </div>
+          <div class="col-md-2">
+              <button class="btn btn-primary" name="Delete" type="submit">Delete</button>
+          </div>
+        </div>
+    </fieldset>
+  </form>
+</div>
+{% endblock %}

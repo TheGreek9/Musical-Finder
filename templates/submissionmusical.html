@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block main %}
+<div class="row">
+  <h3>Thank You For Your Submission!</h3>
+  <p>Pending a review, we will add your submission to our database</p>
+</div>
+<div class="row">
+  <div class="col-md-offset-2 col-md-2">
+    <a href="{{url_for('index')}}" class="btn btn-default">Go Back</a>
+  </div>
+  <div class="col-md-offset-2 col-md-2">
+    <a href="{{url_for('newmusical')}}" class="btn btn-default">Add Another Musical</a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block main %}
+<form autocomplete="off", method="post">
+<table style="width:100%">
+  <tr>
+    <th>check</th>
+    <th>num</th>
+    <th>Track</th>
+    <th>Artist</th>
+    <th>Album</th>
+    <th>ID</th>
+    <th>Spotify Preview</th>
+  </tr>
+{% for item in spotifyDict %}
+<tr>
+  <fieldset>
+  <td><input type="radio" name="songCheck" value={{item.num}}> Musical</td>
+  </fieldset>
+  <td>{{item.num}}</td>
+  <td>{{item.track}}</td>
+  <td>{{item.artist}}</td>
+  <td>{{item.album}}</td>
+  <td>{{item.id}}</td>
+  <td>
+    {% if item.preview %}
+    <audio id="myAudio" controls>
+      <source src="{{item.preview}}">
+      Your browser does not support the audio element.
+    </audio>
+    {% else %}
+    None
+    {% endif %}
+  </td>
+</tr>
+{% endfor %}
+</table>
+<div class="form-group">
+    <br><br><button class="btn btn-primary" type="submit">Add ID and preview</button>
+</div>
+</form>
+
+{% endblock %}
