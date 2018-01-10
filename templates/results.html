@@ -24,6 +24,7 @@
       <th>Original Musical</th>
       <th>Composer</th>
       <th>Genre</th>
+      <th>Sheet Music</th>
       <th>Musical/Non Musical</th>
       {% if not pickedRole %}
       <th>Role</th>
@@ -37,6 +38,12 @@
       <td>{{song.original_musical}}</td>
       <td>{{song.composer}}</td>
       <td>{{song.genre}}</td>
+      <td>
+      {% if song.sheet_music %}
+      <a href={{song.sheet_music}}> <i class="fa fa-file-text-o" style="font-size:24px"></i></a></td>
+      {% else %}
+      None
+      {% endif %}
       <td>{{song.musicalNon}}</td>
       {% if not pickedRole %}
         <td>{{song.role}}</td>
