@@ -4,6 +4,16 @@ from requests.auth import HTTPBasicAuth
 from flask import redirect, render_template, request, session, url_for
 from functools import wraps
 
+def apology(text):
+    endpoint = request.endpoint
+
+    if endpoint == "review":
+        return render_template("incorrect.html", incorrect=text, endpoint="index")
+    else:
+        return render_template("incorrect.html", incorrect=text, endpoint=endpoint)
+
+    #return redirect(url_for("incorrect", next=request.endpoint), incorrect=text)
+
 def getSong(song, artist = ""):
 
     password = get_passwords()
@@ -45,10 +55,6 @@ def getSong(song, artist = ""):
         i += 1
 
     return spotifyDict
-
-def apology(text=""):
-
-    return render_template("incorrect.html", incorrect=text)
 
 def get_text(text):
     return request.form.get(text)
