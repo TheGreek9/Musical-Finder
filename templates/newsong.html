@@ -3,53 +3,59 @@
 <div class="container">
   <div class="row">
     <div class="hello">
-      <form autocomplete="off" method="post">
-        <fieldset>
-            <h3 align="center">Song Addition</h3>
-                <div class="form-group">
-                    <label for="songName">Song Choice</label>
-                    <input class="form-control" id="songName" name="songName" placeholder="Song Name" type="text"/>
-                </div>
-                <div class="form-group">
-                    <label for="songId">Musical Auditioning For:</label>
-                    <input class="form-control" id="newMusical" name="newMusical" placeholder="Musical" type="text"/>
-                </div>
-                <div class="form-group">
-                    <label for="role">Role To Add Song To:</label>
-                    <input class="form-control" id="role" name="role" placeholder="Role" type="text"/>
-                </div>
-                <div class="form-group">
-                    <label for="singerArtist">Singer/Artist:</label>
-                    <input class="form-control" id="singerArtist" name="singerArtist" placeholder="Singer/Artist" type="text"/>
-                </div>
-                <div class="form-group">
-                    <label for="genre">Genre:</label>
-                    <input class="form-control" id="genre" name="genre" placeholder="Genre (optional)" type="text"/>
-                </div>
-                <div class="form-group">
-                    <label for="originalMusical">Original Musical:</label>
-                    <input class="form-control" id="originalMusical" name="originalMusical" placeholder="Original Musical (optional)" type="text"/>
-                </div>
-                <div class="form-group">
-                    <label for="composer">Composer:</label>
-                    <input class="form-control" id="composer" name="composer" placeholder="Composer (optional)" type="text"/>
-                </div>
-                <div class="form-group">
-                    <label for="sheetMusic">Sheet Music:</label>
-                    <input class="form-control" id="sheetMusic" name="sheetMusic" placeholder="Sheet Music (optional)" type="text"/>
-                </div>
-                <form action="">
-                  <input type="radio" name="musicalNon" value="Musical" checked> Musical
-                  <input type="radio" name="musicalNon" value="Non Musical"> Non Musical<br>
-                </form>
-                <br>
-                <div class="form-group">
-                    <a href="{{url_for('index')}}" class="btn btn-primary">Go Back</a>
-                    <button class="btn btn-primary" type="submit">Add Song</button>
-                </div>
-            </fieldset>
-  </form>
-</div>
-</div>
+      <form data-toggle="validator" autocomplete="off" method="post" id="newsongform">
+        <h3 align="center">Song Addition</h3>
+          <div class="form-group">
+              <label for="songName" class="control-label">Song Choice</label>
+              <input class="form-control" id="songName" name="songName" placeholder="Song Name" type="text" data-error="Please input
+              your song choice" required>
+              <div class="help-block with-errors"></div>
+          </div>
+          <div class="form-group">
+              <label for="newMusical" class="control-label">Musical Auditioning For:</label>
+              <input class="form-control" id="newMusical" name="newMusical" placeholder="Musical" type="text"/ data-error="Please input
+              musical you are auditioning for" data-html=true required>
+              <div class="help-block with-errors"></div>
+          </div>
+          <div class="form-group">
+              <label for="role" class="control-label">Role To Add Song To:</label>
+              <input class="form-control" id="role" name="role" placeholder="Role" type="text" data-error="Please input the role you
+              would like to add the song to" required>
+              <div class="help-block with-errors"></div>
+          </div>
+          <div class="form-group">
+              <label for="singerArtist" class="control-label">Singer/Artist:</label>
+              <input class="form-control" id="singerArtist" name="singerArtist" placeholder="Singer/Artist" type="text" data-error="Please
+              add the singer or artist associated with the song" required/>
+              <div class="help-block with-errors"></div>
+          </div>
+          <div class="form-group">
+              <label for="genre">Genre:</label>
+              <input class="form-control" id="genre" name="genre" placeholder="Genre (optional)" type="text"/>
+          </div>
+          <div class="form-group">
+              <label for="originalMusical">Original Musical:</label>
+              <input class="form-control" id="originalMusical" name="originalMusical" placeholder="Original Musical (optional)" type="text"/>
+          </div>
+          <div class="form-group">
+              <label for="composer">Composer:</label>
+              <input class="form-control" id="composer" name="composer" placeholder="Composer (optional)" type="text"/>
+          </div>
+          <div class="form-group">
+              <label for="sheetMusic">Sheet Music:</label>
+              <input class="form-control" id="sheetMusic" name="sheetMusic" placeholder="Sheet Music (optional)" type="url"/>
+          </div>
+          <form action="">
+            <input type="radio" name="musicalNon" value="Musical" checked> Musical
+            <input type="radio" name="musicalNon" value="Non Musical"> Non Musical<br>
+          </form>
+          <br>
+          <div class="form-group">
+              <a href="{{url_for('index')}}" class="btn btn-primary">Go Back</a>
+              <button class="btn btn-primary" type="submit" id="submit">Add Song</button>
+          </div>
+      </form>
+    </div>
+  </div>
 </div>
 {% endblock %}

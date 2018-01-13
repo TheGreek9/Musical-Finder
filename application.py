@@ -91,21 +91,10 @@ def index():
         return render_template("search.html")
 
 @app.route("/changepassword", methods=["GET", "POST"])
+@login_required
 def changepassword():
 
     if request.method == "POST":
-
-        if not get_text("old password"):
-            return apology("Please provide old password")
-
-        if not get_text("new password"):
-            return apology("Please provide new password")
-
-        if not get_text("confirm password"):
-            return apology("Please confirmation password")
-
-        if get_text("new password") != get_text("confirm password"):
-            return apology("New password does not match confirmation password")
 
         rows = db.execute("SELECT * FROM users WHERE id = :userid", userid=session["user_id"])
 
@@ -151,14 +140,6 @@ def login():
 
     # if user reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
-
-        # ensure username was submitted
-        if not get_text("username"):
-            return apology("must provide username")
-
-        # ensure password was submitted
-        elif not get_text("password"):
-            return apology("must provide password")
 
         # query database for username
         rows = db.execute("SELECT * FROM users WHERE username = :username", username=get_text("username"))
@@ -206,10 +187,6 @@ def newSong():
 
             return render_template('submissionsong.html')
 
-        elif not get_text("songName"):
-
-            return apology("Must submit song")
-
         else:
             return apology("Something went wrong")
     else:
@@ -229,10 +206,6 @@ def newmusical():
 
             return render_template("newmusical.html")
 
-        elif not get_text("musicalName"):
-
-            return apology("Must submit either musical")
-
         else:
             return apology("Something went wrong")
     else:
@@ -245,21 +218,6 @@ def register():
     session.clear()
 
     if request.method == "POST":
-
-        if not get_text("first name"):
-            return apology("Must Provide Your First Name")
-
-        if not get_text("username"):
-            return apology("Must Provide A Username")
-
-        elif not get_text("password"):
-            return apology("Must Provide Password")
-
-        elif not get_text("confirm password"):
-            return apology("Must Provide Confirmation Password")
-
-        elif get_text("password") != get_text("confirm password"):
-            return apology("Password And Confirmation Password Do Not Match")
 
         # query database for username
         rows = db.execute("SELECT * FROM users WHERE username = :username", username=get_text("username"))

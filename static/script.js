@@ -1,4 +1,5 @@
 $(document).ready(function() {
+  $.fn.validator.Constructor.FOCUS_OFFSET = '100';
   var newsongMusical = ""
 
     $("#search").typeahead({
@@ -49,6 +50,31 @@ $(document).ready(function() {
     if($("#newMusical").val()){
       localStorage.setItem("musical", "");
     }
+
+    var validated = false;
+
+    $("#submit").click(function(){
+      if (validated == false) {
+        $("#newsongform").validator('validate');
+      }
+      else{
+        $("#newsongform").submit();
+      }
+    });
+
+    $("#newsongform").on("invalid.bs.validator", function(){
+      $("#submit").css('opacity',0.5);
+      $("#submit").css('cursor','not-allowed');
+      validated = false;
+    });
+
+    $("#newsongform").on("valid.bs.validator", function(){
+      $("#submit").css('opacity',1);
+      $("#submit").css('cursor','default');
+      validated = true;
+    });
+
+
 
 });
 

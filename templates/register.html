@@ -2,23 +2,35 @@
 
 {% block main %}
 <div class="hello">
-    <form action="{{ url_for('register') }}" method="post">
+    <form data-toggle="validator" action="{{ url_for('register') }}" id="newsongform" method="post">
         <p style="text-decoration: underline; text-align: center;">Register</p>
         <fieldset>
             <div class="form-group">
-                <input autocomplete="off" autofocus class="form-control" name="first name" placeholder="First Name" type="text"/>
+              <label for="first name" class="control-label">Name</label>
+              <input autocomplete="off" autofocus class="form-control" name="first name" placeholder="Name" type="text"
+              data-error="Please insert your name" required>
+              <div class="help-block with-errors"></div>
             </div>
             <div class="form-group">
-                <input autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text"/>
+              <label for="username" class="control-label">Username</label>
+              <input autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text"
+              data-error="Please insert a username" required>
+              <div class="help-block with-errors"></div>
             </div>
             <div class="form-group">
-                <input class="form-control" name="password" placeholder="Password" type="password"/>
+              <label for="password" class="control-label">Password</label>
+              <input class="form-control" name="password" id="passwordFirst" placeholder="Password" required type="password"
+              data-error="Please insert your password">
+              <div class="help-block with-errors"></div>
             </div>
             <div class="form-group">
-                <input class="form-control" name="confirm password" placeholder="Confirm Password" type="password"/>
+              <label for="confirm password" class="control-label">Confirm Password</label>
+              <input class="form-control" data-match="#passwordFirst" data-match-error"Passwords don't match" name="confirm password"
+              placeholder="Confirm Password" required type="password">
+              <div class="help-block with-errors"></div>
             </div>
             <div class="form-group">
-                <button class="btn btn-default" type="submit">Register</button>
+              <button class="btn btn-default" id="submit" type="submit">Register</button>
             </div>
         </fieldset>
     </form>
