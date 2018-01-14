@@ -113,8 +113,8 @@ function AddRoles(suggestion)
           {
               options += "<option>" + data[i].role + "</option>"
           }
-          $("#sel").append(options)
           $("#sel").append("<option>All Roles</option>")
+          $("#sel").append(options)
   })
   .fail(function(jqXHR, textStatus, errorThrown) {
 

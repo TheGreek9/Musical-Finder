@@ -12,8 +12,6 @@ def apology(text):
     else:
         return render_template("incorrect.html", incorrect=text, endpoint=endpoint)
 
-    #return redirect(url_for("incorrect", next=request.endpoint), incorrect=text)
-
 def getSong(song, artist = ""):
 
     password = get_passwords()

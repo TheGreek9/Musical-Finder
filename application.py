@@ -42,15 +42,15 @@ def index():
         if get_text("musical") == "All Musicals":
             if get_text("musicalSongs") and not get_text("nonMusicalSongs"):
                 songList = db.execute("SELECT musicals.musical, songs.song_title, songs.role, songs.singerArtist, songs.original_musical, songs.composer, \
-                songs.genre, songs.sheet_music, songs.musicalNon FROM songs INNER JOIN musicals ON musicals.Id = songs.musicalId WHERE \
+                songs.genre, songs.sheet_music, songs.musicalNon, songs.spotifyPrev FROM songs INNER JOIN musicals ON musicals.Id = songs.musicalId WHERE \
                 (songs.musicalNon = 'musical' AND songs.pendingNon != 'pending')")
             elif not get_text("musicalSongs") and get_text("nonMusicalSongs"):
                 songList = db.execute("SELECT musicals.musical, songs.song_title, songs.role, songs.singerArtist, songs.original_musical, songs.composer, \
-                songs.genre, songs.sheet_music, songs.musicalNon FROM songs INNER JOIN musicals ON musicals.Id = songs.musicalId WHERE \
+                songs.genre, songs.sheet_music, songs.musicalNon, songs.spotifyPrev FROM songs INNER JOIN musicals ON musicals.Id = songs.musicalId WHERE \
                 (songs.musicalNon = 'non musical' AND songs.pendingNon != 'pending')")
             else:
                 songList = db.execute("SELECT musicals.musical, songs.song_title, songs.role, songs.singerArtist, songs.original_musical, songs.composer, \
-                songs.genre, songs.sheet_music, songs.musicalNon FROM songs INNER JOIN musicals ON musicals.Id = songs.musicalId WHERE songs.pendingNon != 'pending'")
+                songs.genre, songs.sheet_music, songs.musicalNon, songs.spotifyPrev FROM songs INNER JOIN musicals ON musicals.Id = songs.musicalId WHERE songs.pendingNon != 'pending'")
 
             return render_template("allresults.html", songList=songList)
 
@@ -258,6 +258,8 @@ def review():
             songList = db.execute("SELECT musicals.musical, songs.songId, songs.song_title, songs.role, songs.singerArtist, songs.genre, songs.original_musical, songs.composer, \
             songs.genre, songs.sheet_music, songs.spotifyId, songs.musicalNon FROM songs INNER JOIN musicals ON musicals.Id = songs.musicalId WHERE songs.pendingNon = 'pending'")
             return render_template("review.html", songList=songList)
+        else:
+            return apology("You are not authorized to view this")
     else:
         if session["user_id"] == 1:
             songList = db.execute("SELECT musicals.musical, songs.songId, songs.song_title, songs.role, songs.singerArtist, songs.genre, songs.original_musical, songs.composer, \
