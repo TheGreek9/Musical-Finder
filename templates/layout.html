@@ -59,9 +59,8 @@
                     <div class="collapse navbar-collapse" id="navbar">
                             <ul class="nav navbar-nav">
                                 <li><a href="{{ url_for('index') }}">Search</a></li>
-                            </ul>
-                            <ul class="nav navbar-nav">
                                 <li><a href="{{ url_for('newSong') }}">Add A New Song</a></li>
+                                <li><a href="{{ url_for('newmusical') }}">Add A New Musical</a></li>
                             </ul>
                         {% if session.user_id %}
                             <ul class="nav navbar-nav navbar-right">

@@ -65,20 +65,20 @@ $(document).ready(function() {
 
     $("#submit").click(function(){
       if (validated == false) {
-        $("#newsongform").validator('validate');
+        $("#newform").validator('validate');
       }
       else{
-        $("#newsongform").submit();
+        $("#newform").submit();
       }
     });
 
-    $("#newsongform").on("invalid.bs.validator", function(){
+    $("#newform").on("invalid.bs.validator", function(){
       $("#submit").css('opacity',0.5);
       $("#submit").css('cursor','not-allowed');
       validated = false;
     });
 
-    $("#newsongform").on("valid.bs.validator", function(){
+    $("#newform").on("valid.bs.validator", function(){
       $("#submit").css('opacity',1);
       $("#submit").css('cursor','default');
       validated = true;

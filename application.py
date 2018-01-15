@@ -204,7 +204,9 @@ def newmusical():
             lyricist=get_text("lyricist"), genre=get_text("musicalGenre"), production=get_text("productionYear"),
             plot=get_text("plot"))
 
-            return render_template("newmusical.html")
+            #email_spyro()
+
+            return render_template("submissionmusical.html")
 
         else:
             return apology("Something went wrong")
@@ -243,20 +245,39 @@ def register():
 def review():
     if request.method == "POST":
         if session["user_id"] == 1:
-            checking = request.form.getlist("checking")
+            if 'addSong' in request.form or 'deleteSong' in request.form:
+                checking = request.form.getlist("checkingSong")
 
-            if 'Add' in request.form:
-                for checked in checking:
-                    db.execute("UPDATE songs SET pendingNon='N/A' WHERE songId=:songid", songid=int(checked))
+                if 'addSong' in request.form:
+                    for checked in checking:
+                        db.execute("UPDATE songs SET pendingNon='N/A' WHERE songId=:songid", songid=int(checked))
 
 
-            elif 'Delete' in request.form:
-                for checked in checking:
-                    db.execute("DELETE FROM songs WHERE (songId=:songid AND pendingNon='pending')", songid=int(checked))
+                elif 'deleteSong' in request.form:
+                    for checked in checking:
+                        db.execute("DELETE FROM songs WHERE (songId=:songid AND pendingNon='pending')", songid=int(checked))
+
+            elif 'addMusical' in request.form or 'deleteMusical' in request.form:
+                checking = request.form.getlist("checkingMusical")
+
+                if 'addMusical' in request.form:
+                    for checked in checking:
+                        db.execute("UPDATE musicals SET pendingNon='N/A' WHERE Id=:musicalid", musicalid=int(checked))
+
+
+                elif 'deleteMusical' in request.form:
+                    for checked in checking:
+                        db.execute("DELETE FROM musicals WHERE (Id=:musicalid AND pendingNon='pending')", musicalid=int(checked))
+
+            else:
+                return apology("Somtething's wrong")
 
 
             songList = db.execute("SELECT musicals.musical, songs.songId, songs.song_title, songs.role, songs.singerArtist, songs.genre, songs.original_musical, songs.composer, \
             songs.genre, songs.sheet_music, songs.spotifyId, songs.musicalNon FROM songs INNER JOIN musicals ON musicals.Id = songs.musicalId WHERE songs.pendingNon = 'pending'")
+
+            musicalList = db.execute("SELECT * FROM musicals WHERE pendingNon='pending'")
+
             return render_template("review.html", songList=songList)
         else:
             return apology("You are not authorized to view this")
@@ -264,7 +285,10 @@ def review():
         if session["user_id"] == 1:
             songList = db.execute("SELECT musicals.musical, songs.songId, songs.song_title, songs.role, songs.singerArtist, songs.genre, songs.original_musical, songs.composer, \
             songs.genre, songs.sheet_music, songs.spotifyId, songs.musicalNon FROM songs INNER JOIN musicals ON musicals.Id = songs.musicalId WHERE songs.pendingNon = 'pending'")
-            return render_template("review.html", songList=songList)
+
+            musicalList = db.execute("SELECT * FROM musicals WHERE pendingNon='pending'")
+
+            return render_template("review.html", songList=songList, musicalList=musicalList)
         else:
             return apology("You are not authorized to view this")
 
@@ -285,11 +309,11 @@ def search():
     urlstring = "%" + request.args.get("que") + "%"
 
     if urlstring != "%%":
-        data = db.execute("SELECT * FROM musicals WHERE musical LIKE :url", url=urlstring)
+        data = db.execute("SELECT * FROM musicals WHERE (musical LIKE :url AND pendingNon != 'pending'", url=urlstring)
     else:
         return jsonify([])
 
     try:
         return jsonify(data)
     except:
-        return jsonify(username="hello world")
+        return jsonify(username="somethings wrong")
