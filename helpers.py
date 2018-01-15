@@ -12,6 +12,24 @@ def apology(text):
     else:
         return render_template("incorrect.html", incorrect=text, endpoint=endpoint)
 
+def email_spyro():
+    password = get_passwords()
+    password = password[1]
+
+    fromaddr = "nickjackca@gmail.com"
+    toaddr = "sziangos@gmail.com"
+    msg = MIMEMultipart()
+    msg['From'] = fromaddr
+    msg['To'] = toaddr
+    msg['Subject'] = "New Addition to Database"
+    body = '<p>There\'s a new addition to the database. To view, <a href="www.google.com">login here</a></p>'
+    msg.attach(MIMEText(body, 'html'))
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(fromaddr, password)
+    server.sendmail(fromaddr, toaddr, msg.as_string())
+    server.quit()
+
 def getSong(song, artist = ""):
 
     password = get_passwords()
@@ -54,6 +72,14 @@ def getSong(song, artist = ""):
 
     return spotifyDict
 
+def get_passwords():
+    text=[]
+    with open('pass.txt', 'r') as file:
+        for line in file.readlines():
+            text.append(line.rstrip('\n'))
+
+    return text
+
 def get_text(text):
     return request.form.get(text)
 
@@ -72,29 +98,3 @@ def redirect_dest(fallback):
     except:
         return redirect(url_for(fallback))
     return redirect(dest_url)
-
-def email_spyro():
-    password = get_passwords()
-    password = password[1]
-
-    fromaddr = "nickjackca@gmail.com"
-    toaddr = "sziangos@gmail.com"
-    msg = MIMEMultipart()
-    msg['From'] = fromaddr
-    msg['To'] = toaddr
-    msg['Subject'] = "New Addition to Database"
-    body = '<p>There\'s a new addition to the database. To view, <a href="www.google.com">login here</a></p>'
-    msg.attach(MIMEText(body, 'html'))
-    server = smtplib.SMTP('smtp.gmail.com', 587)
-    server.starttls()
-    server.login(fromaddr, password)
-    server.sendmail(fromaddr, toaddr, msg.as_string())
-    server.quit()
-
-def get_passwords():
-    text=[]
-    with open('pass.txt', 'r') as file:
-        for line in file.readlines():
-            text.append(line.rstrip('\n'))
-
-    return text

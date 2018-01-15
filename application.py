@@ -309,7 +309,7 @@ def search():
     urlstring = "%" + request.args.get("que") + "%"
 
     if urlstring != "%%":
-        data = db.execute("SELECT * FROM musicals WHERE (musical LIKE :url AND pendingNon != 'pending'", url=urlstring)
+        data = db.execute("SELECT * FROM musicals WHERE (musical LIKE :url AND pendingNon != 'pending')", url=urlstring)
     else:
         return jsonify([])
 
