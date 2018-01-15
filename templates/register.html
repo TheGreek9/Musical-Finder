@@ -2,7 +2,7 @@
 
 {% block main %}
 <div class="hello">
-    <form data-toggle="validator" action="{{ url_for('register') }}" id="newsongform" method="post">
+    <form data-toggle="validator" action="{{ url_for('register', next=request.args.get('next')) }}" id="newsongform" method="post">
         <p style="text-decoration: underline; text-align: center;">Register</p>
         <fieldset>
             <div class="form-group">

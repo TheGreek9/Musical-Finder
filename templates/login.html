@@ -20,7 +20,7 @@
                 <button class="btn btn-default" type="submit" id="submit">Log In</button>
             </div>
             <div class="col-md-offset-2 col-md-2">
-              <a href="{{ url_for('register')}}" class="btn btn-default">Register</a>
+              <a href="{{ url_for('register', next=request.args.get('next')) }}" class="btn btn-default">Register</a>
             </div>
           </div>
         </fieldset>
