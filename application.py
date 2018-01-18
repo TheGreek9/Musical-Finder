@@ -9,12 +9,14 @@ from cs50 import SQL
 from flask_session import Session
 from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
+from flask.ext.bcrypt import Bcrypt
 
 from helpers import *
 
 # configure application
 app = Flask(__name__)
 JSGlue(app)
+bcrypt = Bcrypt(app)
 
 # ensure responses aren't cached
 if app.config["DEBUG"]:

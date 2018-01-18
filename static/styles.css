@@ -33,6 +33,12 @@
     text-align: left;
 }
 
+#resultsMusicalInfo {
+  background-color: rgba(0,0,0,0.6);
+  width: 100%;
+
+}
+
 body {
     background-image: url("https://static.pexels.com/photos/164821/pexels-photo-164821.jpeg");
     min-height: 500px;
@@ -54,6 +60,7 @@ table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
+
 }
 
 caption {
@@ -62,14 +69,17 @@ caption {
 }
 
 td, th {
-    border: 1px solid #000000;
+    border: 1px solid #b3c6ff;
     text-align: left;
     padding: 8px;
 }
 
-tr:nth-child(even) {
-    background-color: #dddddd;
+th {
+    background-color: #9999ff;
+    color: white;
 }
-tr:nth-child(odd) {
-    background-color: #ffffff;
+
+td {
+    background-color: #5c5c8a;
+    color: white;
 }
