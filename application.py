@@ -114,14 +114,14 @@ def changepassword():
 
     if request.method == "POST":
 
-        db.execute("SELECT * FROM users WHERE id = %s", [Session["user_id"]])
+        db.execute("SELECT * FROM users WHERE userId = %s", [Session["user_id"]])
 
         rows = db.fetchall()
 
         if not pwd_context.verify(get_text("old password"), rows[0]["password"]):
             return apology("Invalid password")
 
-        db.execute("UPDATE users SET password=%s WHERE id=%s", [session["user_id"], pwd_context.hash(get_text("new password"))])
+        db.execute("UPDATE users SET password=%s WHERE userId=%s", [session["user_id"], pwd_context.hash(get_text("new password"))])
 
         return redirect(url_for("index"))
 
@@ -161,7 +161,7 @@ def login():
     if request.method == "POST":
 
         # query database for username
-        db.execute("SELECT * FROM users WHERE username = %s", [get_text("username")])
+        db.execute("SELECT * FROM users WHERE userEmail = %s", [get_text("username")])
 
         rows = db.fetchall()
 
@@ -197,10 +197,11 @@ def newSong():
             db.execute("SELECT Id FROM musicals WHERE musical=%s", [get_text("newMusical")])
             idData = db.fetchall()
 
-            db.execute("INSERT INTO songs ('musicalId', 'song_title', 'role', 'singer', 'artist', 'genre', 'original_musical', \
-            'composer', 'musicalNon', 'sheet_music', 'pendingNon') VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 'pending')", [idData[0]['Id'], get_text("songName"),
+            db.execute("INSERT INTO songs (musicalId, song_title, role, singer, artist, genre, original_musical, \
+            composer, musicalNon, sheet_music, pendingNon) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, pending)", [idData[0]['Id'], get_text("songName"),
             get_text("role"), get_text("singer"), get_text("artist"), get_text("genre"), get_text("originalMusical"), get_text("composer"),
             get_text("musicalNon"), get_text("sheetMusic")])
+            conn.commit()
 
             getSong(get_text("songName"), get_text("artist"))
 
@@ -219,9 +220,10 @@ def newmusical():
     if request.method == "POST":
 
         if get_text("musicalName"):
-            db.execute("INSERT INTO musicals ('musical', 'playwright', 'composer', 'lyricist', 'genre', 'production_year', 'plot', 'pendingNon') \
-            VALUES (%s, %s, %s, %s, %s, %s, %s, 'pending')", [get_text("musicalName"), get_text("playwright"), get_text("musicalComposer"),
+            db.execute("INSERT INTO musicals (musical, playwright, composer, lyricist, genre, production_year, plot, pendingNon) \
+            VALUES (%s, %s, %s, %s, %s, %s, %s, pending)", [get_text("musicalName"), get_text("playwright"), get_text("musicalComposer"),
             get_text("lyricist"), get_text("musicalGenre"), get_text("productionYear"), get_text("plot")])
+            conn.commit()
 
             #email_spyro()
 
@@ -241,7 +243,7 @@ def register():
     if request.method == "POST":
 
         # query database for username
-        db.execute("SELECT * FROM users WHERE username = %s", [get_text("username")])
+        db.execute("SELECT * FROM users WHERE userEmail = %s", [get_text("username")])
 
         rows = db.fetchall()
 
@@ -250,8 +252,9 @@ def register():
             return apology("invalid username")
 
 
-        db.execute("INSERT INTO users (username, password, firstName) VALUES (%s, %s, %s)",
-        [get_text("username"), pwd_context.hash(get_text("password")), get_text("first name")])
+        db.execute("INSERT INTO users (userEmail, password, firstName, lastName) VALUES (%s, %s, %s, %s)",
+        [get_text("username"), pwd_context.hash(get_text("password")), get_text("first name"), get_text("last name")])
+        conn.commit()
 
         session["user_id"] = get_text("username")
         session["first_name"] = get_text("first name")

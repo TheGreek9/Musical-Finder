@@ -54,10 +54,10 @@ $(document).ready(function() {
     $("input[name=musicalNon]").click(function(){
       var val = $('input[name=musicalNon]:checked').val();
       if (val == "Musical") {
-        $("#singerArtist").prop('required', false);
+        $("#artist").prop('required', false);
       }
       else{
-        $("#singerArtist").prop('required', true);
+        $("#artist").prop('required', true);
       }
     });
 
