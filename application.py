@@ -1,22 +1,23 @@
 import os
 import re
 import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from flask import Flask, flash, jsonify, redirect, render_template, request, url_for
+import MySQLdb
+from flask import Flask, flash, jsonify, redirect, render_template, request, url_for, session
 from flask_jsglue import JSGlue
 from cs50 import SQL
 from flask_session import Session
 from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
-from flask.ext.bcrypt import Bcrypt
+from flask_bcrypt import Bcrypt
+from flaskext.mysql import MySQL
 
-from helpers import *
+from helpers import apology, email_spyro, getSong, get_text, login_required, redirect_dest
 
 # configure application
 app = Flask(__name__)
 JSGlue(app)
 bcrypt = Bcrypt(app)
+mysql = MySQL()
 
 # ensure responses aren't cached
 if app.config["DEBUG"]:
@@ -31,11 +32,11 @@ if app.config["DEBUG"]:
 app.config["SESSION_FILE_DIR"] = mkdtemp()
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
-app.config["JSONIFY_PRETTYPRINT_REGULAR"] = False
 Session(app)
+app.config["JSONIFY_PRETTYPRINT_REGULAR"] = False
 
-# configure CS50 Library to use SQLite database
-db = SQL("sqlite:///musicals.db")
+conn = MySQLdb.connect("TheGreek9.mysql.pythonanywhere-services.com","TheGreek9","oatmealcookie","TheGreek9$musicalsite")
+db = conn.cursor(MySQLdb.cursors.DictCursor)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -43,22 +44,26 @@ def index():
     if request.method == "POST":
         if get_text("musical") == "All Musicals":
             if get_text("musicalSongs") and not get_text("nonMusicalSongs"):
-                songList = db.execute("SELECT musicals.musical, songs.song_title, songs.role, songs.singerArtist, songs.original_musical, songs.composer, \
+                db.execute("SELECT musicals.musical, songs.song_title, songs.role, songs.singer, songs.artist, songs.original_musical, songs.composer, \
                 songs.genre, songs.sheet_music, songs.musicalNon, songs.spotifyPrev FROM songs INNER JOIN musicals ON musicals.Id = songs.musicalId WHERE \
                 (songs.musicalNon = 'musical' AND songs.pendingNon != 'pending')")
+                songList = db.fetchall()
             elif not get_text("musicalSongs") and get_text("nonMusicalSongs"):
-                songList = db.execute("SELECT musicals.musical, songs.song_title, songs.role, songs.singerArtist, songs.original_musical, songs.composer, \
+                db.execute("SELECT musicals.musical, songs.song_title, songs.role, songs.singer, songs.artist, songs.original_musical, songs.composer, \
                 songs.genre, songs.sheet_music, songs.musicalNon, songs.spotifyPrev FROM songs INNER JOIN musicals ON musicals.Id = songs.musicalId WHERE \
                 (songs.musicalNon = 'non musical' AND songs.pendingNon != 'pending')")
+                songList = db.fetchall()
             else:
-                songList = db.execute("SELECT musicals.musical, songs.song_title, songs.role, songs.singerArtist, songs.original_musical, songs.composer, \
+                db.execute("SELECT musicals.musical, songs.song_title, songs.role, songs.singer, songs.artist, songs.original_musical, songs.composer, \
                 songs.genre, songs.sheet_music, songs.musicalNon, songs.spotifyPrev FROM songs INNER JOIN musicals ON musicals.Id = songs.musicalId WHERE songs.pendingNon != 'pending'")
+                songList = db.fetchall()
 
             return render_template("allresults.html", songList=songList)
 
         else:
             music = '%' + get_text("musical") + '%'
-            musicalList = db.execute("SELECT * FROM musicals WHERE musical LIKE :music", music=music)
+            db.execute("SELECT * FROM musicals WHERE musical LIKE %s", [music])
+            musicalList = db.fetchall()
             role = get_text("role")
 
             if len(musicalList) != 1:
@@ -66,30 +71,41 @@ def index():
 
             if role == "All Roles":
                 if get_text("musicalSongs") and not get_text("nonMusicalSongs"):
-                    songList = db.execute("SELECT * FROM songs WHERE musicalNon='musical' AND musicalId=:musicId AND pendingNon!='pending'",
-                     musicId=musicalList[0]["Id"])
+                    db.execute("SELECT * FROM songs WHERE musicalNon='musical' AND musicalId=%s AND pendingNon!='pending'",
+                     [musicalList[0]["Id"]])
+                    songList = db.fetchall()
                 elif not get_text("musicalSongs") and get_text("nonMusicalSongs"):
-                    songList = db.execute("SELECT * FROM songs WHERE musicalNon='non musical'AND musicalId=:musicId AND pendingNon!='pending'",
-                     musicId=musicalList[0]["Id"])
+                    db.execute("SELECT * FROM songs WHERE musicalNon='non musical'AND musicalId=%s AND pendingNon!='pending'",
+                    [musicalList[0]["Id"]])
+                    songList = db.fetchall()
                 else:
-                    songList = db.execute("SELECT * FROM songs WHERE musicalId=:musicId AND pendingNon!='pending'", musicId=musicalList[0]["Id"])
+                    db.execute("SELECT * FROM songs WHERE musicalId=%s AND pendingNon!='pending'", [musicalList[0]["Id"]])
+                    songList = db.fetchall()
 
                 return render_template("results.html", musicalList=musicalList, songList=songList)
 
             else:
                 if get_text("musicalSongs") and not get_text("nonMusicalSongs"):
-                    songList = db.execute("SELECT * FROM songs WHERE role=:role AND musicalNon='musical' AND musicalId=:musicId AND pendingNon!='pending'",
-                    role=get_text("role"), musicId=musicalList[0]["Id"])
+                    db.execute("SELECT * FROM songs WHERE role=%s AND musicalNon='musical' AND musicalId=%s AND pendingNon!='pending'",
+                    [get_text("role"), musicalList[0]["Id"]])
+                    songList = db.fetchall()
                 elif not get_text("musicalSongs") and get_text("nonMusicalSongs"):
-                    songList = db.execute("SELECT * FROM songs WHERE role=:role AND musicalNon='non musical'AND musicalId=:musicId AND pendingNon!='pending'",
-                    role=get_text("role"), musicId=musicalList[0]["Id"])
+                    db.execute("SELECT * FROM songs WHERE role=%s AND musicalNon='non musical'AND musicalId=%s AND pendingNon!='pending'",
+                    [get_text("role"), musicalList[0]["Id"]])
+                    songList = db.fetchall()
                 else:
-                    songList = db.execute("SELECT * FROM songs WHERE role=:role AND musicalId=:musicId AND pendingNon!='pending'",
-                    role=get_text("role"), musicId=musicalList[0]["Id"])
+                    db.execute("SELECT * FROM songs WHERE role=%s AND musicalId=%s AND pendingNon!='pending'",
+                    [get_text("role"), musicalList[0]["Id"]])
+                    songList = db.fetchall()
 
                 return render_template("results.html", musicalList=musicalList, songList=songList, pickedRole=role)
 
     else:
+        """testing = dict(test = 1, genre = "comedy")
+        test = 1
+        db.execute("SELECT * FROM musicals WHERE Id = %s", [test])
+        rows = db.fetchall()
+        print("@@@@@@@@@@@@@@@@@@@{}".format(rows[0]['Id']))"""
         return render_template("search.html")
 
 @app.route("/changepassword", methods=["GET", "POST"])
@@ -98,12 +114,14 @@ def changepassword():
 
     if request.method == "POST":
 
-        rows = db.execute("SELECT * FROM users WHERE id = :userid", userid=session["user_id"])
+        db.execute("SELECT * FROM users WHERE id = %s", [Session["user_id"]])
+
+        rows = db.fetchall()
 
         if not pwd_context.verify(get_text("old password"), rows[0]["password"]):
             return apology("Invalid password")
 
-        db.execute("UPDATE users SET password=:phash WHERE id=:userid", userid=session["user_id"], phash=pwd_context.hash(get_text("new password")))
+        db.execute("UPDATE users SET password=%s WHERE id=%s", [session["user_id"], pwd_context.hash(get_text("new password"))])
 
         return redirect(url_for("index"))
 
@@ -126,8 +144,7 @@ def getspotifyinfo():
         chosenSpotifyId = spotifyDict[chosenSongId]['id']
         chosenSpotifyPrev = spotifyDict[chosenSongId]['preview']
 
-        db.execute("UPDATE songs SET spotifyId=:chosenspotifyId, spotifyPrev=:chosenspotifyPrev WHERE songId=:songid",
-        chosenspotifyId=chosenSpotifyId, chosenspotifyPrev=chosenSpotifyPrev, songid=originalSongId)
+        db.execute("UPDATE songs SET spotifyId=%s, spotifyPrev=%s WHERE songId=%s", [chosenSpotifyId, chosenSpotifyPrev, originalSongId])
 
         return redirect(url_for('review'))
 
@@ -144,7 +161,9 @@ def login():
     if request.method == "POST":
 
         # query database for username
-        rows = db.execute("SELECT * FROM users WHERE username = :username", username=get_text("username"))
+        db.execute("SELECT * FROM users WHERE username = %s", [get_text("username")])
+
+        rows = db.fetchall()
 
         # ensure username exists and password is correct
         if len(rows) != 1 or not pwd_context.verify(get_text("password"), rows[0]["password"]):
@@ -175,15 +194,15 @@ def newSong():
     if request.method == "POST":
 
         if get_text("songName"):
-            idData = db.execute("SELECT Id FROM musicals WHERE musical=:musical", musical=get_text("newMusical"))
+            db.execute("SELECT Id FROM musicals WHERE musical=%s", [get_text("newMusical")])
+            idData = db.fetchall()
 
-            db.execute("INSERT INTO songs ('musicalId', 'song_title', 'role', 'singerArtist', 'genre', 'original_musical', \
-            'composer', 'musicalNon', 'sheet_music', 'pendingNon') VALUES (:musicalid, :songtitle, :role, :singerartist, \
-            :genre, :original, :composer, :musicalnon, :sheet, 'pending')", musicalid=idData[0]['Id'], songtitle=get_text("songName"),
-            role=get_text("role"), singerartist=get_text("singerArtist"), genre=get_text("genre"), original=get_text("originalMusical"), composer=get_text("composer"),
-            musicalnon=get_text("musicalNon"), sheet=get_text("sheetMusic"))
+            db.execute("INSERT INTO songs ('musicalId', 'song_title', 'role', 'singer', 'artist', 'genre', 'original_musical', \
+            'composer', 'musicalNon', 'sheet_music', 'pendingNon') VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 'pending')", [idData[0]['Id'], get_text("songName"),
+            get_text("role"), get_text("singer"), get_text("artist"), get_text("genre"), get_text("originalMusical"), get_text("composer"),
+            get_text("musicalNon"), get_text("sheetMusic")])
 
-            getSong(get_text("songName"), get_text("singerArtist"))
+            getSong(get_text("songName"), get_text("artist"))
 
             #email_spyro()
 
@@ -201,10 +220,8 @@ def newmusical():
 
         if get_text("musicalName"):
             db.execute("INSERT INTO musicals ('musical', 'playwright', 'composer', 'lyricist', 'genre', 'production_year', 'plot', 'pendingNon') \
-            VALUES (:musical, :playwright, :composer, :lyricist, :genre, :production, :plot, 'pending')",
-            musical=get_text("musicalName"), playwright=get_text("playwright"), composer=get_text("musicalComposer"),
-            lyricist=get_text("lyricist"), genre=get_text("musicalGenre"), production=get_text("productionYear"),
-            plot=get_text("plot"))
+            VALUES (%s, %s, %s, %s, %s, %s, %s, 'pending')", [get_text("musicalName"), get_text("playwright"), get_text("musicalComposer"),
+            get_text("lyricist"), get_text("musicalGenre"), get_text("productionYear"), get_text("plot")])
 
             #email_spyro()
 
@@ -224,15 +241,17 @@ def register():
     if request.method == "POST":
 
         # query database for username
-        rows = db.execute("SELECT * FROM users WHERE username = :username", username=get_text("username"))
+        db.execute("SELECT * FROM users WHERE username = %s", [get_text("username")])
+
+        rows = db.fetchall()
 
         # ensure username does not exists and password is correct
         if len(rows) != 0:
             return apology("invalid username")
 
 
-        db.execute("INSERT INTO users (username, password, firstName) VALUES (:username, :phash, :firstname)",
-        username=get_text("username"), phash=pwd_context.hash(get_text("password")), firstname=get_text("first name"))
+        db.execute("INSERT INTO users (username, password, firstName) VALUES (%s, %s, %s)",
+        [get_text("username"), pwd_context.hash(get_text("password")), get_text("first name")])
 
         session["user_id"] = get_text("username")
         session["first_name"] = get_text("first name")
@@ -252,43 +271,50 @@ def review():
 
                 if 'addSong' in request.form:
                     for checked in checking:
-                        db.execute("UPDATE songs SET pendingNon='N/A' WHERE songId=:songid", songid=int(checked))
+                        db.execute("UPDATE songs SET pendingNon='N/A' WHERE songId=%s", [int(checked)])
 
 
                 elif 'deleteSong' in request.form:
                     for checked in checking:
-                        db.execute("DELETE FROM songs WHERE (songId=:songid AND pendingNon='pending')", songid=int(checked))
+                        db.execute("DELETE FROM songs WHERE (songId=%s AND pendingNon='pending')", [int(checked)])
 
             elif 'addMusical' in request.form or 'deleteMusical' in request.form:
                 checking = request.form.getlist("checkingMusical")
 
                 if 'addMusical' in request.form:
                     for checked in checking:
-                        db.execute("UPDATE musicals SET pendingNon='N/A' WHERE Id=:musicalid", musicalid=int(checked))
+                        db.execute("UPDATE musicals SET pendingNon='N/A' WHERE Id=%s", [int(checked)])
 
 
                 elif 'deleteMusical' in request.form:
                     for checked in checking:
-                        db.execute("DELETE FROM musicals WHERE (Id=:musicalid AND pendingNon='pending')", musicalid=int(checked))
+                        db.execute("DELETE FROM musicals WHERE (Id=%s AND pendingNon='pending')", [int(checked)])
 
             else:
                 return apology("Somtething's wrong")
 
 
-            songList = db.execute("SELECT musicals.musical, songs.songId, songs.song_title, songs.role, songs.singerArtist, songs.genre, songs.original_musical, songs.composer, \
+            db.execute("SELECT musicals.musical, songs.songId, songs.song_title, songs.role, songs.singer, songs.artist, songs.genre, songs.original_musical, songs.composer, \
             songs.genre, songs.sheet_music, songs.spotifyId, songs.musicalNon FROM songs INNER JOIN musicals ON musicals.Id = songs.musicalId WHERE songs.pendingNon = 'pending'")
+            songList = db.fetchall()
 
-            musicalList = db.execute("SELECT * FROM musicals WHERE pendingNon='pending'")
+            db.execute("SELECT * FROM musicals WHERE pendingNon='pending'")
+
+            musicalList = db.fetchall()
 
             return render_template("review.html", songList=songList)
         else:
             return apology("You are not authorized to view this")
     else:
         if session["user_id"] == 1:
-            songList = db.execute("SELECT musicals.musical, songs.songId, songs.song_title, songs.role, songs.singerArtist, songs.genre, songs.original_musical, songs.composer, \
+            db.execute("SELECT musicals.musical, songs.songId, songs.song_title, songs.role, songs.singer, songs.artist, songs.genre, songs.original_musical, songs.composer, \
             songs.genre, songs.sheet_music, songs.spotifyId, songs.musicalNon FROM songs INNER JOIN musicals ON musicals.Id = songs.musicalId WHERE songs.pendingNon = 'pending'")
 
-            musicalList = db.execute("SELECT * FROM musicals WHERE pendingNon='pending'")
+            songList = db.fetchall()
+
+            db.execute("SELECT * FROM musicals WHERE pendingNon='pending'")
+
+            musicalList = db.fetchall()
 
             return render_template("review.html", songList=songList, musicalList=musicalList)
         else:
@@ -299,9 +325,10 @@ def roles():
     music = request.args.get("music")
 
     try:
-        idData = db.execute("SELECT Id FROM musicals WHERE musical=:music", music=music)
-        data = db.execute("SELECT DISTINCT role FROM songs WHERE musicalId=:musicalId AND pendingNon!='pending'", musicalId=idData[0]["Id"])
-
+        db.execute("SELECT Id FROM musicals WHERE musical = %s", [music])
+        idData = db.fetchall()
+        db.execute("SELECT DISTINCT role FROM songs WHERE musicalId=%s AND pendingNon!='pending'", [idData[0]['Id']])
+        data = db.fetchall()
         return jsonify(data)
     except:
         return jsonify([])
@@ -311,7 +338,8 @@ def search():
     urlstring = "%" + request.args.get("que") + "%"
 
     if urlstring != "%%":
-        data = db.execute("SELECT * FROM musicals WHERE (musical LIKE :url AND pendingNon != 'pending')", url=urlstring)
+        db.execute("SELECT * FROM musicals WHERE (musical LIKE %s AND pendingNon != 'pending');", [urlstring])
+        data = db.fetchall()
     else:
         return jsonify([])
 
