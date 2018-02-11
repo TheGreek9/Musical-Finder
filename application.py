@@ -7,6 +7,7 @@ from tempfile import mkdtemp
 from flask_bcrypt import Bcrypt
 from flaskext.mysql import MySQL
 
+from databaseconfig import config
 from helpers import apology, email_spyro, getSong, get_text, login_required, redirect_dest
 from classes import Songs, Musicals, Users
 
@@ -31,13 +32,6 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 app.config["JSONIFY_PRETTY _REGULAR"] = False
-
-config = {
-    'user': 'TheGreek9',
-    'password': 'oatmealcookie',
-    'host': 'TheGreek9.mysql.pythonanywhere-services.com',
-    'database' : 'TheGreek9$musicalsite'
-}
 
 conn = MySQLdb.connect(**config)
 db = conn.cursor(MySQLdb.cursors.DictCursor)
