@@ -1,0 +1,11 @@
+.DS_Store
+SiteTests/
+pass.txt
+*.csv
+sqlite-snapshot-201711271756/
+testing.py
+venv/
+__pycache__/
+*config.py
+test.py
+

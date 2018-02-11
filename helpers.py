@@ -1,6 +1,7 @@
 import requests
-import os.path
-from requests.auth import HTTPBasicAuth
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from flask import redirect, render_template, request, session, url_for
 from functools import wraps
 
@@ -22,7 +23,7 @@ def email_spyro():
     msg['From'] = fromaddr
     msg['To'] = toaddr
     msg['Subject'] = "New Addition to Database"
-    body = '<p>There\'s a new addition to the database. To view, <a href="www.google.com">login here</a></p>'
+    body = '<p>There\'s a new addition to the database. To view, <a href="http://thegreek9.pythonanywhere.com/login?next=review">login here</a></p>'
     msg.attach(MIMEText(body, 'html'))
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.starttls()
@@ -74,7 +75,7 @@ def getSong(song, artist = ""):
 
 def get_passwords():
     text=[]
-    with open('pass.txt', 'r') as file:
+    with open('/home/TheGreek9/Musical-Finder/pass.txt', 'r') as file:
         for line in file.readlines():
             text.append(line.rstrip('\n'))
 

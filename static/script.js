@@ -84,8 +84,6 @@ $(document).ready(function() {
       validated = true;
     });
 
-
-
 });
 
 function search(query, syncResults, asyncResults)
