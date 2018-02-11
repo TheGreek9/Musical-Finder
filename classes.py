@@ -4,17 +4,11 @@ from flask import Flask
 from flask_bcrypt import Bcrypt
 
 from helpers import apology
+from databaseconfig import config
 
 mysql = MySQL()
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
-
-config = {
-    'user': 'TheGreek9',
-    'password': 'oatmealcookie',
-    'host': 'TheGreek9.mysql.pythonanywhere-services.com',
-    'database' : 'TheGreek9$musicalsite'
-}
 
 class Songs:
 
