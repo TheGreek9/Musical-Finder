@@ -1,5 +1,4 @@
-{% extends "layout.html" %}
-{% block main %}
+{% extends "layout.html" %} {% block main %}
 <table>
   <tr>
     <th>Musical</th>
@@ -25,20 +24,17 @@
     <td>{{song.musicalNon}}</td>
     <td>{{song.role}}</td>
     <td>
-    {% if song.spotifyPrev %}
+      {% if song.spotifyPrev %}
       <audio id="myAudio" controls>
         <source src="{{song.spotifyPrev}}">
         Your browser does not support the audio element.
-      </audio>
-    {% else %}
-      None
-    {% endif%}
+      </audio> {% else %} None {% endif%}
     </td>
   </tr>
   {% endfor %}
-  </table>
-  <div class="row">
-    <p>Don't see the song you were thinking of? Add it to our database!</p>
-    <a href="{{ url_for('newSong')}}" class="btn btn-default">Add Song</a>
-  </div>
+</table>
+<div class="row">
+  <p>Don't see the song you were thinking of? Add it to our database!</p>
+  <a href="{{ url_for('newSong')}}" class="btn btn-default">Add Song</a>
+</div>
 {% endblock %}

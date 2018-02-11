@@ -1,10 +1,9 @@
-{% extends "layout.html" %}
-{% block main %}
+{% extends "layout.html" %} {% block main %}
 <div class="row">
-<h2>Not Found</h2>
-<h4>We apologize but we currently do not have that musical in our database.</h4>
-<br>
-<h4>Would you like to add it?</h4>
-<a href="{{ url_for('newmusical')}}" class="btn btn-default">Add Musical</a>
+  <h2>Not Found</h2>
+  <h4>We apologize but we currently do not have that musical in our database.</h4>
+  <br>
+  <h4>Would you like to add it?</h4>
+  <a href="{{ url_for('newmusical')}}" class="btn btn-default">Add Musical</a>
 </div>
 {% endblock %}

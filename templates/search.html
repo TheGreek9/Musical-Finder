@@ -1,36 +1,41 @@
-{% extends "layout.html" %}
-{% block main %}
+{% extends "layout.html" %} {% block main %}
 <h1 align="center">Tune Finder!</h1>
 <div class="container" id="outer_container">
-    <div class="row">
-            <div class="hello">
-            <form data-toggle="validator" autocomplete="off" method="post" id="newForm">
-                <fieldset>
-                  <h4>What are you auditioning for?</h4>
-                    <div class="form-group">
-                        <label class="sr-only" for="musical">Musical</label>
-                        <input class="form-control" id="search" name="musical" placeholder="Musical you are auditioning for" type="text"
-                        data-error="Please select a musical" required>
-                        <div class="help-block with-errors"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="sel" class="control-label">Roles:</label>
-                        <select class="form-control" id="sel" name="role"></select>
-                    </div>
-                    <div class="form-group">
-                        <button class="btn btn-primary" type="submit">Search</button>
-                    </div>
-                    <div class="form-group">
-                        <div class="checkbox">
-                          <label><input type="checkbox" name="musicalOrNon" value="musicalSongs" checked>Musical Theater Songs</label>
-                        </div>
-                        <div class="checkbox">
-                          <label><input type="checkbox" name="musicalOrNon" value="nonMusicalSongs" checked>Non-Musical Theater Songs</label>
-                        </div>
-                    </div>
-                </fieldset>
-            </form>
+  <div class="row">
+    <div class="hello">
+      <form data-toggle="validator" autocomplete="off" method="post" id="newForm">
+        <fieldset>
+          <h4>What are you auditioning for?</h4>
+          <div class="form-group">
+            <label class="sr-only" for="musical">Musical</label>
+            <input class="form-control" id="search" name="musical" placeholder="Musical you are auditioning for" type="text" data-error="Please select a musical" required>
+            <div class="help-block with-errors"></div>
+          </div>
+          <div class="form-group">
+            <label for="sel" class="control-label">Roles:</label>
+            <select class="form-control" id="sel" name="role"></select>
+          </div>
+          <div class="form-group">
+            <button class="btn btn-primary" type="submit">Search</button>
+          </div>
+          <div class="form-group">
+            <div class="checkbox">
+              <label><input type="checkbox" name="musicalOrNon" value="musicalSongs" checked>Musical Theater Songs</label>
             </div>
+            <div class="checkbox">
+              <label><input type="checkbox" name="musicalOrNon" value="nonMusicalSongs" checked>Non-Musical Theater Songs</label>
+            </div>
+          </div>
+        </fieldset>
+      </form>
     </div>
+    <div class="checkbox">
+      <label><input type="checkbox" name="nonMusicalSongs" checked>Non-Musical Theater Songs</label>
+    </div>
+  </div>
+  </fieldset>
+  </form>
+</div>
+</div>
 </div>
 {% endblock %}

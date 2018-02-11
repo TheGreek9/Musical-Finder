@@ -1,22 +1,17 @@
-{% extends "layout.html" %}
-{% block main %}
+{% extends "layout.html" %} {% block main %}
 <div class="container" id="resultsMusicalInfo">
   {% for info in musicalList %}
-          <p>Musical: <strong id="resultsMusical">{{info.musical}}</strong></p>
-          <p>Playwright: <strong>{{info.playwright}}</strong></p>
-          <p>Composer: <strong>{{info.composer}}</strong></p>
-          <p>Genre: <strong>{{info.genre}}</strong></p>
-          <p>Lyricist: <strong>{{info.lyricist}}</strong></p>
-          <p>Plot: {{info.plot}}</p>
+  <p>Musical: <strong id="resultsMusical">{{info.musical}}</strong></p>
+  <p>Playwright: <strong>{{info.playwright}}</strong></p>
+  <p>Composer: <strong>{{info.composer}}</strong></p>
+  <p>Genre: <strong>{{info.genre}}</strong></p>
+  <p>Lyricist: <strong>{{info.lyricist}}</strong></p>
+  <p>Plot: {{info.plot}}</p>
   {% endfor %}
 </div>
 <table style="width:100%">
   <caption>
-    {% if pickedRole %}
-      Suggested Songs for {{pickedRole}}
-    {% else %}
-      Suggested Songs for All Roles
-    {% endif %}
+    {% if pickedRole %} Suggested Songs for {{pickedRole}} {% else %} Suggested Songs for All Roles {% endif %}
   </caption>
   <tr>
     {% if not pickedRole %}
@@ -31,41 +26,36 @@
     <th>Sheet Music</th>
     <th>Musical/Non Musical</th>
     <th>Spotify Preview</th>
-    </tr>
-    {% for song in songList %}
-    <tr>
-      {% if not pickedRole %}
-        <td>{{song.role}}</td>
-      {% endif %}
-      <td>{{song.song_title}}</td>
-      <td>{{song.singer}}</td>
-      <td>{{song.artist}}</td>
-      <td>{{song.original_musical}}</td>
-      <td>{{song.composer}}</td>
-      <td>{{song.genre}}</td>
-      <td>
+  </tr>
+  {% for song in songList %}
+  <tr>
+    {% if not pickedRole %}
+    <td>{{song.role}}</td>
+    {% endif %}
+    <td>{{song.song_title}}</td>
+    <td>{{song.singer}}</td>
+    <td>{{song.artist}}</td>
+    <td>{{song.original_musical}}</td>
+    <td>{{song.composer}}</td>
+    <td>{{song.genre}}</td>
+    <td>
       {% if song.sheet_music %}
       <a href={{song.sheet_music}}> <i class="fa fa-file-text-o" style="font-size:24px"></i></a></td>
-      {% else %}
-      None
-      {% endif %}
-      <td>{{song.musicalNon}}</td>
-      <td>
+    {% else %} None {% endif %}
+    <td>{{song.musicalNon}}</td>
+    <td>
       {% if song.spotifyPrev %}
-        <audio id="myAudio" controls>
+      <audio id="myAudio" controls>
           <source src="{{song.spotifyPrev}}">Your browser does not support the audio element.
-        </audio>
-      {% else %}
-        None
-      {% endif %}
-      </td>
-      </tr>
-    {% endfor %}
-  </table>
-  <br>
-  <br>
-    <div class="row">
-      <p>Don't see the song you were thinking of? Add it to our database!  <a href="{{ url_for('newSong')}}" onclick='passMusical()' class="btn btn-default">Add Song</a></p>
-    </div>
+        </audio> {% else %} None {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+<br>
+<br>
+<div class="row">
+  <p>Don't see the song you were thinking of? Add it to our database! <a href="{{ url_for('newSong')}}" onclick='passMusical()' class="btn btn-default">Add Song</a></p>
+</div>
 </div>
 {% endblock %}

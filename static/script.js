@@ -2,137 +2,130 @@ $(document).ready(function() {
   $.fn.validator.Constructor.FOCUS_OFFSET = '100';
   var newsongMusical = ""
 
-    $("#search").typeahead({
-        minLength: 1,
-        hint: false
+  $("#search").typeahead({
+    minLength: 1,
+    hint: false
+  }, {
+    source: search,
+    limit: 10,
+    display: function(suggestion) {
+      return suggestion.musical
     },
-    {
-        source: search,
-        limit: 10,
-        display: function(suggestion) { return suggestion.musical},
-    });
+  });
 
-    $("#newMusical").typeahead({
-        minLength: 1,
-        hint: false
+  $("#newMusical").typeahead({
+    minLength: 1,
+    hint: false
+  }, {
+    source: search,
+    limit: 10,
+    display: function(suggestion) {
+      return suggestion.musical
     },
-    {
-        source: search,
-        limit: 10,
-        display: function(suggestion) { return suggestion.musical},
-    });
+  });
 
-    $("#search").on("typeahead:selected", function(eventObject, suggestion, name) {
-        $("#sel").empty();
-        if($(this).val() == "All Musicals") {
-          $("#sel").append("<option>All Roles</option>")
-          $("#sel").css("pointer-events", "none");
-        }
-        else {
-          AddRoles(suggestion);
-        }
-    });
-
-    $("#search").blur(function(){
-      if( !$(this).val() ) {
-        $("#sel").empty();
-      }
-      else {
-      }
-    });
-
-    newsongMusical = localStorage.getItem("musical");
-
-    if(newsongMusical != "") {
-      $("#newMusical").val(newsongMusical);
+  $("#search").on("typeahead:selected", function(eventObject, suggestion, name) {
+    $("#sel").empty();
+    if ($(this).val() == "All Musicals") {
+      $("#sel").append("<option>All Roles</option>")
+      $("#sel").css("pointer-events", "none");
+    } else {
+      AddRoles(suggestion);
     }
+  });
 
-    if($("#newMusical").val()){
-      localStorage.setItem("musical", "");
+  $("#search").blur(function() {
+    if (!$(this).val()) {
+      $("#sel").empty();
+    } else {}
+  });
+
+  newsongMusical = localStorage.getItem("musical");
+
+  if (newsongMusical != "") {
+    $("#newMusical").val(newsongMusical);
+  }
+
+  if ($("#newMusical").val()) {
+    localStorage.setItem("musical", "");
+  }
+
+  $("input[name=musicalNon]").click(function() {
+    var val = $('input[name=musicalNon]:checked').val();
+    if (val == "Musical") {
+      $("#artist").prop('required', false);
+    } else {
+      $("#artist").prop('required', true);
     }
+  });
 
-    $("input[name=musicalNon]").click(function(){
-      var val = $('input[name=musicalNon]:checked').val();
-      if (val == "Musical") {
-        $("#artist").prop('required', false);
-      }
-      else{
-        $("#artist").prop('required', true);
-      }
-    });
+  var validated = false;
 
-    var validated = false;
+  $("#submit").click(function() {
+    if (validated == false) {
+      $("#newform").validator('validate');
+    } else {
+      $("#newform").submit();
+    }
+  });
 
-    $("#submit").click(function(){
-      if (validated == false) {
-        $("#newform").validator('validate');
-      }
-      else{
-        $("#newform").submit();
-      }
-    });
+  $("#newform").on("invalid.bs.validator", function() {
+    $("#submit").css('opacity', 0.5);
+    $("#submit").css('cursor', 'not-allowed');
+    validated = false;
+  });
 
-    $("#newform").on("invalid.bs.validator", function(){
-      $("#submit").css('opacity',0.5);
-      $("#submit").css('cursor','not-allowed');
-      validated = false;
-    });
-
-    $("#newform").on("valid.bs.validator", function(){
-      $("#submit").css('opacity',1);
-      $("#submit").css('cursor','default');
-      validated = true;
-    });
+  $("#newform").on("valid.bs.validator", function() {
+    $("#submit").css('opacity', 1);
+    $("#submit").css('cursor', 'default');
+    validated = true;
+  });
 
 });
 
-function search(query, syncResults, asyncResults)
-{
+function search(query, syncResults, asyncResults) {
 
-    var parameters = {
-        que: query
-    };
-    $.getJSON(Flask.url_for("search"),parameters)
+  var parameters = {
+    que: query
+  };
+  $.getJSON(Flask.url_for("search"), parameters)
     .done(function(data, textStatus, jqXHR) {
-        // call typeahead's callback with search results (i.e., places)
-        asyncResults(data);
+      // call typeahead's callback with search results (i.e., places)
+      asyncResults(data);
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
 
-        // log error to browser's console
-        console.log(errorThrown.toString());
+      // log error to browser's console
+      console.log(errorThrown.toString());
 
-        // call typeahead's callback with no results
-        asyncResults([]);
+      // call typeahead's callback with no results
+      asyncResults([]);
     });
 
 }
 
-function AddRoles(suggestion)
-{
+function AddRoles(suggestion) {
   var options = ""
   var parameters = {
-      music: suggestion.musical
+    music: suggestion.musical
   }
 
   $.getJSON(Flask.url_for("roles"), parameters)
-  .done(function(data, textStatus, jqXHR) {
-      for (var i = 0; i < data.length; i++)
-          {
-              options += "<option>" + data[i].role + "</option>"
-          }
-          $("#sel").append("<option>All Roles</option>")
-          $("#sel").append(options)
-  })
-  .fail(function(jqXHR, textStatus, errorThrown) {
+    .done(function(data, textStatus, jqXHR) {
+      for (var i = 0; i < data.length; i++) {
+        options += "<option>" + data[i].role + "</option>"
+      }
+      $("#sel").append("<option>All Roles</option>")
+      $("#sel").append(options)
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) {
 
       // log error to browser's console
       console.log(errorThrown.toString());
-  });
+    });
 }
 
-function passMusical()
-{
-    var musical = $("#resultsMusical").text();
-    localStorage.setItem("musical", musical);
+function passMusical() {
+  var musical = $("#resultsMusical").text();
+  localStorage.setItem("musical", musical);
 }

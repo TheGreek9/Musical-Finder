@@ -2,96 +2,96 @@
 
 <html lang="en">
 
-    <head>
+<head>
 
-        <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta -->
-        <meta charset="utf-8"/>
-        <meta content="initial-scale=1, width=device-width" name="viewport"/>
+  <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta -->
+  <meta charset="utf-8" />
+  <meta content="initial-scale=1, width=device-width" name="viewport" />
 
-        <!-- http://getbootstrap.com/ -->
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- http://getbootstrap.com/ -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 
-        <!--http://fontawesome.io/ -->
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <!--http://fontawesome.io/ -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-        <!-- app's own CSS-->
-        <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet"/>
+  <!-- app's own CSS-->
+  <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet" />
 
-        <!-- http://jquery.com/ -->
-        <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+  <!-- http://jquery.com/ -->
+  <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 
-        <!-- http://getbootstrap.com/ -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <!-- http://getbootstrap.com/ -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-        <!-- https://github.com/corejavascript/typeahead.js/blob/master/doc/jquery_typeahead.md-->
-        <script src="https://cdn.rawgit.com/corejavascript/typeahead.js/master/dist/typeahead.jquery.js"></script>
+  <!-- https://github.com/corejavascript/typeahead.js/blob/master/doc/jquery_typeahead.md-->
+  <script src="https://cdn.rawgit.com/corejavascript/typeahead.js/master/dist/typeahead.jquery.js"></script>
 
-        <!-- http://handlebarsjs.com/ -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
+  <!-- http://handlebarsjs.com/ -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
 
-        <!-- http://stewartjpark.com/Flask-JSGlue/ -->
-        {{ JSGlue.include() }}
+  <!-- http://stewartjpark.com/Flask-JSGlue/ -->
+  {{ JSGlue.include() }}
 
-        <!-- app's own JavaScript-->
-        <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <!-- app's own JavaScript-->
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 
-        <!-- http://1000hz.github.io/bootstrap-validator/ -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
+  <!-- http://1000hz.github.io/bootstrap-validator/ -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
 
-        <title>Musical TuneFinder</title>
-    </head>
+  <title>Musical TuneFinder</title>
+</head>
 
-    <body>
+<body>
 
-        <div class="container">
+  <div class="container">
 
-            <nav class="navbar navbar-default">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <button aria-expanded="false" class="navbar-toggle collapsed" data-target="#navbar" data-toggle="collapse" type="button">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button aria-expanded="false" class="navbar-toggle collapsed" data-target="#navbar" data-toggle="collapse" type="button">
                             <span class="sr-only">Toggle navigation</span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand"><span>Musical Tune Finder</span>
+          <a class="navbar-brand"><span>Musical Tune Finder</span>
                     </div>
                     <div class="collapse navbar-collapse" id="navbar">
                             <ul class="nav navbar-nav">
                                 <li><a href="{{ url_for('index') }}">Search</a></li>
-                                <li><a href="{{ url_for('newSong') }}">Add A New Song</a></li>
-                                <li><a href="{{ url_for('newmusical') }}">Add A New Musical</a></li>
-                            </ul>
-                        {% if session.user_id %}
-                            <ul class="nav navbar-nav navbar-right">
-                                <li><a href="#">Welcome {{session.first_name}}!</a></li>
-                                <li><a href="{{ url_for('changepassword') }}">Change Password</a></li>
-                                <li><a href="{{ url_for('logout') }}">Log Out</a></li>
-                            </ul>
-                        {% else %}
-                            <ul class="nav navbar-nav navbar-right">
-                                <li><a href="{{ url_for('register') }}">Register</a></li>
-                                <li><a href="{{ url_for('login') }}">Log In</a></li>
-                            </ul>
-                        {% endif %}
-                    </div>
-                </div>
-            </nav>
-
-            {% if get_flashed_messages() %}
-                <header>
-                    <div class="alert alert-info" role="alert">
-                        {{ get_flashed_messages() | join(" ") }}
-                    </div>
-                </header>
-            {% endif %}
-
-            <main>
-                {% block main %}{% endblock %}
-            </main>
-
+          <li><a href="{{ url_for('newSong') }}">Add A New Song</a></li>
+          <li><a href="{{ url_for('newmusical') }}">Add A New Musical</a></li>
+          </ul>
+          {% if session.user_id %}
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Welcome {{session.first_name}}!</a></li>
+            <li><a href="{{ url_for('changepassword') }}">Change Password</a></li>
+            <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+          </ul>
+          {% else %}
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="{{ url_for('register') }}">Register</a></li>
+            <li><a href="{{ url_for('login') }}">Log In</a></li>
+          </ul>
+          {% endif %}
         </div>
+      </div>
+    </nav>
 
-    </body>
+    {% if get_flashed_messages() %}
+    <header>
+      <div class="alert alert-info" role="alert">
+        {{ get_flashed_messages() | join(" ") }}
+      </div>
+    </header>
+    {% endif %}
+
+    <main>
+      {% block main %}{% endblock %}
+    </main>
+
+  </div>
+
+</body>
 
 </html>

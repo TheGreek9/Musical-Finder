@@ -1,66 +1,66 @@
 /* stylize typeahead.js a la http://twitter.github.io/typeahead.js/css/examples.css */
-.tt-menu
-{
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-top: 1px;
-    max-height: 150px;
-    overflow-y: auto;
-    width: 350px;
+
+.tt-menu {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 1px;
+  max-height: 150px;
+  overflow-y: auto;
+  width: 350px;
 }
-.tt-input
-{
-  width:350px;
+
+.tt-input {
+  width: 350px;
 }
+
 .tt-suggestion.tt-cursor {
-    background-color: #0097cf;
-    color: #fff;
-    cursor: pointer;
+  background-color: #0097cf;
+  color: #fff;
+  cursor: pointer;
 }
+
 .tt-suggestion {
-    margin: 0 auto;
-    padding: 6px 12px;
+  margin: 0 auto;
+  padding: 6px 12px;
 }
 
 .row {
-    text-align: center;
+  text-align: center;
 }
 
 .hello {
-    width: 25em;
-    margin: 0 auto;
-    text-align: left;
+  width: 25em;
+  margin: 0 auto;
+  text-align: left;
 }
 
 #resultsMusicalInfo {
-  background-color: rgba(0,0,0,0.6);
+  background-color: rgba(0, 0, 0, 0.6);
   width: 100%;
-
 }
 
 body {
-    background-image: url("https://static.pexels.com/photos/164821/pexels-photo-164821.jpeg");
-    min-height: 500px;
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+  background-image: url("https://static.pexels.com/photos/164821/pexels-photo-164821.jpeg");
+  min-height: 500px;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 h1, h2, h3, h4, p {
-    color: white;
+  color: white;
 }
 
 label {
-    color: white;
+  color: white;
 }
 
 table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
 }
 
 caption {
@@ -69,17 +69,17 @@ caption {
 }
 
 td, th {
-    border: 1px solid #b3c6ff;
-    text-align: left;
-    padding: 8px;
+  border: 1px solid #b3c6ff;
+  text-align: left;
+  padding: 8px;
 }
 
 th {
-    background-color: #9999ff;
-    color: white;
+  background-color: #9999ff;
+  color: white;
 }
 
 td {
-    background-color: #5c5c8a;
-    color: white;
+  background-color: #5c5c8a;
+  color: white;
 }

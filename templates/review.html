@@ -1,14 +1,13 @@
-{% extends "layout.html" %}
-{% block main %}
+{% extends "layout.html" %} {% block main %}
 <div class="container" id="outer_container">
   <form autocomplete="off" method="post">
     <fieldset>
       <div class="row">
-      <div class="col-md-2">
-        <a href="{{url_for('index')}}" class="btn btn-primary">Go Back</a>
+        <div class="col-md-2">
+          <a href="{{url_for('index')}}" class="btn btn-primary">Go Back</a>
+        </div>
       </div>
-    </div>
-    <br>
+      <br>
       <table style="width:100%">
         <tr>
           <th></th>
@@ -46,15 +45,15 @@
         {% endfor %}
       </table>
       <br>
-          <div class="row">
-            <div class="col-md-offset-2 col-md-2">
-                <button class="btn btn-primary" name="addSong" type="submit">Add</button>
-            </div>
-            <div class="col-md-2">
-                <button class="btn btn-primary" name="deleteSong" type="submit">Delete</button>
-            </div>
-          </div>
-          <br><br>
+      <div class="row">
+        <div class="col-md-offset-2 col-md-2">
+          <button class="btn btn-primary" name="addSong" type="submit">Add</button>
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-primary" name="deleteSong" type="submit">Delete</button>
+        </div>
+      </div>
+      <br><br>
       <table style="width:100%">
         <tr>
           <th></th>
@@ -79,15 +78,15 @@
         </tr>
         {% endfor %}
       </table>
-    <br>
-        <div class="row">
-          <div class="col-md-offset-2 col-md-2">
-              <button class="btn btn-primary" name="addMusical" type="submit">Add</button>
-          </div>
-          <div class="col-md-2">
-              <button class="btn btn-primary" name="deleteMusical" type="submit">Delete</button>
-          </div>
+      <br>
+      <div class="row">
+        <div class="col-md-offset-2 col-md-2">
+          <button class="btn btn-primary" name="addMusical" type="submit">Add</button>
         </div>
+        <div class="col-md-2">
+          <button class="btn btn-primary" name="deleteMusical" type="submit">Delete</button>
+        </div>
+      </div>
     </fieldset>
   </form>
 </div>
