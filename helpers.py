@@ -4,6 +4,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from flask import redirect, render_template, request, session, url_for
 from functools import wraps
+from databaseconfig import passconfig
 
 def apology(text):
     endpoint = request.endpoint
@@ -14,8 +15,7 @@ def apology(text):
         return render_template("incorrect.html", incorrect=text, endpoint=endpoint)
 
 def email_spyro():
-    password = get_passwords()
-    password = password[1]
+    password = passconfig['email']
 
     fromaddr = "nickjackca@gmail.com"
     toaddr = "sziangos@gmail.com"
@@ -33,10 +33,8 @@ def email_spyro():
 
 def getSong(song, artist = ""):
 
-    password = get_passwords()
-
-    client_Id = password[3]
-    client_Key = password[5]
+    client_Id = passconfig['client_id']
+    client_Key = passconfig['client_key']
 
     authReq = requests.post("https://accounts.spotify.com/api/token", data="grant_type=client_credentials",
         headers={'Content-type': 'application/x-www-form-urlencoded'}, auth=(client_Id, client_Key))
@@ -72,14 +70,6 @@ def getSong(song, artist = ""):
         i += 1
 
     return spotifyDict
-
-def get_passwords():
-    text=[]
-    with open('/home/TheGreek9/Musical-Finder/pass.txt', 'r') as file:
-        for line in file.readlines():
-            text.append(line.rstrip('\n'))
-
-    return text
 
 def get_text(text):
     return request.form.get(text)
