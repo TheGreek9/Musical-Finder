@@ -3,10 +3,10 @@ SiteTests/
 pass.txt
 *.csv
 sqlite-snapshot-201711271756/
-testing.py
+*test.py
 venv/
 __pycache__/
 *config.py
-test.py
+test*.py
 Website Files/
 gotomysql.sh
