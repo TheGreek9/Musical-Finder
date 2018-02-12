@@ -231,7 +231,10 @@ def register():
         [get_text("username"), pwd_context.hash(get_text("password")), get_text("first name"), get_text("last name")])
         conn.commit()
 
-        session["user_id"] = get_text("username")
+        db.execute("SELECT * FROM users WHERE userEmail = %s", [get_text("username")])
+        user = db.fetchone()
+
+        session["user_id"] = user['userId']
         session["first_name"] = get_text("first name")
 
         return redirect_dest("index")
