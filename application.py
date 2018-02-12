@@ -6,15 +6,13 @@ from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
 from flask_bcrypt import Bcrypt
 from flaskext.mysql import MySQL
-
 from databaseconfig import config
-from helpers import apology, email_spyro, getSong, get_text, login_required, redirect_dest
-from classes import Songs, Musicals, Users
+from helpers import *
+from classes import *
 
 # configure application
 app = Flask(__name__)
 JSGlue(app)
-bcrypt = Bcrypt(app)
 mysql = MySQL()
 
 # ensure responses aren't cached
@@ -103,7 +101,16 @@ def changepassword():
 
     if request.method == "POST":
 
-        Users(session["user_id"]).change_password(request.form)
+        userinfo = Users(session["user_id"]).query_table()
+
+        result = check_password(userinfo['password'], request.form.get("old password"))
+
+        if result == False:
+            return apology("Invalid Credentials")
+
+        newPassword = hash_password(request.form.get("new password"))
+
+        Users(session["user_id"]).change_password(newPassword)
 
         return redirect(url_for("index"))
 
@@ -144,16 +151,19 @@ def login():
     if request.method == "POST":
 
         # query database for username
-        db.execute("SELECT * FROM users WHERE userEmail = %s", [get_text("username")])
-        rows = db.fetchall()
+        userinfo = Users(None, request.form.get("userEmail")).query_table()
 
-        # ensure username exists and password is correct
-        if len(rows) != 1 or not pwd_context.verify(get_text("password"), rows[0]["password"]):
-            return apology("invalid username and/or password")
+        if userinfo == None:
+            return apology("Username or Password incorrect")
+
+        result = check_password(userinfo['password'], request.form.get("password"))
+
+        if result == False:
+            return apology("Username or Password incorrect")
 
         # remember which user has logged in
-        session["user_id"] = rows[0]["userId"]
-        session["first_name"] = rows[0]["firstName"]
+        session["user_id"] = userinfo["userId"]
+        session["first_name"] = userinfo["firstName"]
 
         # redirect user to home page
         return redirect_dest("index")
@@ -218,24 +228,17 @@ def register():
 
         # query database for username
 
-        db.execute("SELECT * FROM users WHERE userEmail = %s", [get_text("username")])
+        userinfo = Users(None, request.form.get("userEmail")).query_table()
 
-        rows = db.fetchall()
+        if userinfo != None:
+            return apology("Invalid Username")
 
-        # ensure username does not exists and password is correct
-        if len(rows) != 0:
-            return apology("invalid username")
+        Users().add_user_to_db(request.form)
 
+        userinfo = Users(None, request.form.get("userEmail")).query_table()
 
-        db.execute("INSERT INTO users (userEmail, password, firstName, lastName) VALUES (%s, %s, %s, %s)",
-        [get_text("username"), pwd_context.hash(get_text("password")), get_text("first name"), get_text("last name")])
-        conn.commit()
-
-        db.execute("SELECT * FROM users WHERE userEmail = %s", [get_text("username")])
-        user = db.fetchone()
-
-        session["user_id"] = user['userId']
-        session["first_name"] = get_text("first name")
+        session["user_id"] = userinfo['userId']
+        session["first_name"] = userinfo['firstName']
 
         return redirect_dest("index")
 
