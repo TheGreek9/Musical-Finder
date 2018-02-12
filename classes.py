@@ -1,14 +1,11 @@
 import MySQLdb
 from flaskext.mysql import MySQL
 from flask import Flask
-from flask_bcrypt import Bcrypt
-
 from helpers import apology
 from databaseconfig import config
+from helpers import hash_password
 
 mysql = MySQL()
-app = Flask(__name__)
-bcrypt = Bcrypt(app)
 
 class Songs:
 
@@ -182,27 +179,22 @@ class Users:
         elif self.userEmail is not None:
             Users.params['userEmail'] = self.userEmail
 
-    def add_user_to_db(self, password):
-        Users.query = "UPDATE users SET password=%(password)s WHERE userId=%(userId)s"
-        pass
+    def add_user_to_db(self, request):
+        Users.params['firstName'] = request.get("firstName")
+        Users.params['lastName'] = request.get("lastName")
+        Users.params['userEmail'] = request.get("userEmail")
+        password = hash_password(request.get("password"))
+        Users.params['password'] = password
 
-    def change_password(self, request):
-        conn = MySQLdb.connect(**config)
-        db = conn.cursor(MySQLdb.cursors.DictCursor)
+        query = "INSERT INTO users (firstName, lastName, userEmail, password) \
+        VALUES (%(firstName)s, %(lastName)s, %(userEmail)s, %(password)s)"
 
-        db.execute("SELECT * FROM users WHERE userId = %(userId)s", Users.params)
-        userinfo = db.fetchone()
+        connect_db(query, Users.params)
 
-        results = check_password(request.get("old password"), userinfo['password'])
-        if results == False:
-            apology("Invalid Credentials")
+    def change_password(self, password):
+        Users.params['password'] = password
 
-        try:
-            password = bcrypt.generate_password_hash(request.get("new password"))
-            Users.params['password'] = password
-            query = "UPDATE users SET password=%(password)s WHERE userId=%(userId)s"
-        except:
-            apology("Unable to hash new password")
+        query = "UPDATE users SET password=%(password)s WHERE userId=%(userId)s"
 
         connect_db(query, Users.params)
 
@@ -220,16 +212,8 @@ class Users:
         conn = MySQLdb.connect(**config)
         db = conn.cursor(MySQLdb.cursors.DictCursor)
         db.execute(query, Users.params)
-        userList = db.fetchall()
+        userList = db.fetchone()
         return userList
-
-def hash_password(password):
-    hashed = bcrypt.generate_password(password)
-    return hashed
-
-def check_password(candidate, hashed):
-    result = bcrypt.check_password_hash(hashed, candidate)
-    return result
 
 def connect_db(query, params):
     conn = MySQLdb.connect(**config)
