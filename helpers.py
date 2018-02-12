@@ -2,9 +2,13 @@ import requests
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from flask import redirect, render_template, request, session, url_for
+from flask import Flask, redirect, render_template, request, session, url_for
 from functools import wraps
 from databaseconfig import passconfig
+from flask_bcrypt import Bcrypt
+
+app = Flask(__name__)
+bcrypt = Bcrypt(app)
 
 def apology(text):
     endpoint = request.endpoint
@@ -13,6 +17,10 @@ def apology(text):
         return render_template("incorrect.html", incorrect=text, endpoint="index")
     else:
         return render_template("incorrect.html", incorrect=text, endpoint=endpoint)
+
+def check_password(hashed, candidate):
+    result = bcrypt.check_password_hash(hashed, candidate)
+    return result
 
 def email_spyro():
     password = passconfig['email']
@@ -73,6 +81,11 @@ def getSong(song, artist = ""):
 
 def get_text(text):
     return request.form.get(text)
+
+def hash_password(password):
+        hashed = bcrypt.generate_password_hash(password)
+        hashed = hashed.decode('utf-8')
+        return hashed
 
 def login_required(f):
     @wraps(f)
