@@ -29,6 +29,7 @@ class Songs:
         connect_db(query, Songs.params)
 
     def add_spotify_info(self, spotifyId, spotifyPrev):
+        Songs.params['songId'] = self.songId
         Songs.params['spotifyId'] = spotifyId
         Songs.params['spotifyPrev'] = spotifyPrev
 
