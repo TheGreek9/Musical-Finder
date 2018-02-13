@@ -133,8 +133,7 @@ def getspotifyinfo():
         chosenSpotifyId = spotifyDict[chosenSongId]['id']
         chosenSpotifyPrev = spotifyDict[chosenSongId]['preview']
 
-        db.execute("UPDATE songs SET spotifyId=%s, spotifyPrev=%s WHERE songId=%s", [chosenSpotifyId, chosenSpotifyPrev, originalSongId])
-        conn.commit()
+        Songs(None, None, None, None, originalSongId).add_spotify_info(chosenSpotifyId, chosenSpotifyPrev)
 
         return redirect(url_for('review'))
 

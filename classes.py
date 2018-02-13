@@ -22,6 +22,20 @@ class Songs:
         self.role = role
         self.songId = songId
 
+    def add_song_to_db(self):
+        Songs.params['songId'] = self.songId
+        query = "UPDATE songs SET pendingNon=%(pendingNon)s WHERE songId=%(songId)s"
+
+        connect_db(query, Songs.params)
+
+    def add_spotify_info(self, spotifyId, spotifyPrev):
+        Songs.params['spotifyId'] = spotifyId
+        Songs.params['spotifyPrev'] = spotifyPrev
+
+        query = "UPDATE songs SET spotifyId=%(spotifyId)s, spotifyPrev=%(spotifyPrev)s WHERE songId=%(songId)s"
+
+        connect_db(query, Songs.params)
+
     def create_song(self, request, userId, musicalId):
         Songs.params['userId'] = userId
         Songs.params['musicalId'] = musicalId
@@ -38,18 +52,6 @@ class Songs:
         query = "INSERT INTO songs (userId, musicalId, song_title, role, singer, artist, genre, original_musical, \
             composer, musicalNon, sheet_music, pendingNon) VALUES (%(userId)s, %(musicalId)s, %(song_title)s, %(role)s, \
             %(singer)s, %(artist)s, %(genre)s, %(originalMusical)s, %(composer)s, %(musicalNon)s, %(sheetMusic)s, %(pendingNon)s)"
-
-        connect_db(query, Songs.params)
-
-    def add_song_to_db(self):
-        Songs.params['songId'] = self.songId
-        query = "UPDATE songs SET pendingNon=%(pendingNon)s WHERE songId=%(songId)s"
-
-        connect_db(query, Songs.params)
-
-    def remove_song(self):
-        Songs.params['songId'] = self.songId
-        query = "DELETE FROM songs WHERE (songId=%(songId)s AND pendingNon=%(pendingNon)s)"
 
         connect_db(query, Songs.params)
 
@@ -91,6 +93,12 @@ class Songs:
         db.execute(query, Songs.params)
         songlist = db.fetchall()
         return songlist
+
+    def remove_song(self):
+        Songs.params['songId'] = self.songId
+        query = "DELETE FROM songs WHERE (songId=%(songId)s AND pendingNon=%(pendingNon)s)"
+
+        connect_db(query, Songs.params)
 
 class Musicals:
     #Need to add query to string instead of append because WSGI spawns 2 threads and
