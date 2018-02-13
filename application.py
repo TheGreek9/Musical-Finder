@@ -6,7 +6,6 @@ from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
 from flask_bcrypt import Bcrypt
 from flaskext.mysql import MySQL
-from databaseconfig import config
 from helpers import *
 from classes import *
 
@@ -30,9 +29,6 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 app.config["JSONIFY_PRETTY _REGULAR"] = False
-
-conn = MySQLdb.connect(**config)
-db = conn.cursor(MySQLdb.cursors.DictCursor)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
