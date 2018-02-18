@@ -1,5 +1,5 @@
 {% extends "layout.html" %} {% block main %}
-<h1 align="center">Tune Finder!</h1>
+<h1 align="center" id="title">Showbiz Song Search!</h1>
 <div class="container" id="outer_container">
   <div class="row">
     <div class="hello">
@@ -16,14 +16,21 @@
             <select class="form-control" id="sel" name="role"></select>
           </div>
           <div class="form-group">
-            <button class="btn btn-primary" type="submit">Search</button>
+            <div class="row">
+              <div class="checkbox">
+                <label><input type="checkbox" name="musicalOrNon" value="musicalSongs" checked>Musical Theater Songs  </label>
+                <label><input type="checkbox" name="musicalOrNon" value="nonMusicalSongs" checked>Non-Musical Theater Songs</label>
+              </div>
+            </div>
           </div>
           <div class="form-group">
-            <div class="checkbox">
-              <label><input type="checkbox" name="musicalOrNon" value="musicalSongs" checked>Musical Theater Songs</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" name="musicalOrNon" value="nonMusicalSongs" checked>Non-Musical Theater Songs</label>
+            <div class="row">
+              <div class="col-md-2">
+                <input class="titlebutton" type="submit" value="Search">
+              </div>
+              <div class="col-md-7 col-md-offset-3">
+                <a class="titlebutton" style="height: 30px;" href="#">Add Musical</a>
+              </div>
             </div>
           </div>
         </fieldset>

@@ -35,9 +35,46 @@
   text-align: left;
 }
 
+.titlebutton {
+  font-family: 'Alex Brush', cursive;
+  font-size: 25px;
+  text-decoration: none;
+  color: white;
+  border-style: solid;
+  border-color: white;
+  border-width: 2px;
+  padding-right: 5px;
+  padding-left: 5px;
+  height: 37px;
+}
+
+input[type=submit] {
+  font-family: 'Alex Brush', cursive;
+  font-size: 25px;
+  text-decoration: none;
+  color: white;
+  border-style: solid;
+  border-color: white;
+  background-color: rgba(255, 255, 255, 0);
+}
+
 #resultsMusicalInfo {
   background-color: rgba(0, 0, 0, 0.6);
   width: 100%;
+}
+
+#title {
+  margin-left: 30%;
+  margin-right: 30%;
+  /*background-color: rgb(40, 40, 40);*/
+  text-align: center;
+  border: 15px solid transparent;
+  padding: 15px;
+  -webkit-border-image: url(http://weclipart.com/gimg/BA2E2F2FF8DAE878/www-clipartandgraphics-com-images-borders-marquee01-gif-border-0-a-tVy6Gt-clipart.gif) 60 round;
+  /* Safari 3.1-5 */
+  -o-border-image: url(http://weclipart.com/gimg/BA2E2F2FF8DAE878/www-clipartandgraphics-com-images-borders-marquee01-gif-border-0-a-tVy6Gt-clipart.gif) 60 round;
+  /* Opera 11-12.1 */
+  border-image: url(http://weclipart.com/gimg/BA2E2F2FF8DAE878/www-clipartandgraphics-com-images-borders-marquee01-gif-border-0-a-tVy6Gt-clipart.gif) 60 round;
 }
 
 body {
