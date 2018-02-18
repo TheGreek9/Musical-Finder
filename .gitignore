@@ -6,7 +6,7 @@ sqlite-snapshot-201711271756/
 *test.py
 venv/
 __pycache__/
-*config.py
+databaseconfig.py
 test*.py
 Website Files/
 gotomysql.sh
