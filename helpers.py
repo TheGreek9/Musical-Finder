@@ -1,5 +1,6 @@
 import requests
 import smtplib
+import logging
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from flask import Flask, redirect, render_template, request, session, url_for
@@ -22,7 +23,7 @@ def check_password(hashed, candidate):
     result = bcrypt.check_password_hash(hashed, candidate)
     return result
 
-def email_spyro():
+def email_spyro(message, site):
     password = passconfig['email']
 
     fromaddr = "nickjackca@gmail.com"
@@ -31,13 +32,14 @@ def email_spyro():
     msg['From'] = fromaddr
     msg['To'] = toaddr
     msg['Subject'] = "New Addition to Database"
-    body = '<p>There\'s a new addition to the database. To view, <a href="http://thegreek9.pythonanywhere.com/login?next=review">login here</a></p>'
+    body = '<p>' + str(message) + ' To view, <a href="' + str(site) + '">click here</a></p>'
     msg.attach(MIMEText(body, 'html'))
-    server = smtplib.SMTP('smtp.gmail.com', 587)
-    server.starttls()
-    server.login(fromaddr, password)
-    server.sendmail(fromaddr, toaddr, msg.as_string())
-    server.quit()
+
+    """server_ssl = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+    server_ssl.ehlo()
+    server_ssl.login(fromaddr, password)
+    server_ssl.sendmail(fromaddr, toaddr, msg.as_string())
+    server_ssl.quit()"""
 
 def getSong(song, artist = ""):
 
@@ -78,9 +80,6 @@ def getSong(song, artist = ""):
         i += 1
 
     return spotifyDict
-
-def get_text(text):
-    return request.form.get(text)
 
 def hash_password(password):
         hashed = bcrypt.generate_password_hash(password)

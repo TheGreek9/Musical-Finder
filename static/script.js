@@ -2,18 +2,7 @@ $(document).ready(function() {
   $.fn.validator.Constructor.FOCUS_OFFSET = '100';
   var newsongMusical = ""
 
-  $("#search").typeahead({
-    minLength: 1,
-    hint: false
-  }, {
-    source: search,
-    limit: 10,
-    display: function(suggestion) {
-      return suggestion.musical
-    },
-  });
-
-  $("#newMusical").typeahead({
+  $("#search, #newMusical").typeahead({
     minLength: 1,
     hint: false
   }, {

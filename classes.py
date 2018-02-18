@@ -1,14 +1,46 @@
 import MySQLdb
+import logging
+import logging.handlers
 from flaskext.mysql import MySQL
 from flask import Flask
-from helpers import apology
 from databaseconfig import config
-from helpers import hash_password
+from helpers import hash_password, apology, email_spyro
 
 mysql = MySQL()
 
-class Songs:
+classLogger = logging.getLogger('baseLogger')
+classLogger.setLevel(logging.ERROR)
 
+def connect_db(query, params, fetch = None):
+    try:
+        conn = MySQLdb.connect(**config)
+        db = conn.cursor(MySQLdb.cursors.DictCursor)
+        db.execute(query, params)
+    except Exception:
+        classLogger.error('db.execute function error')
+        raise
+
+    try:
+        if fetch == 1:
+            return db.fetchone()
+        elif fetch == 2:
+            return db.fetchall()
+        else:
+            conn.commit()
+    except Exception:
+        classLogger.error('Error with db fetching functions')
+        raise
+
+def test_connection():
+    try:
+        conn = MySQLdb.connect(**config)
+        db = conn.cursor(MySQLdb.cursors.DictCursor)
+    except Exception:
+        classLogger.error('Error with trying to initially connect to database')
+        apology("There was a problem connecting testing")
+        raise
+
+class Songs:
     #Need to add query to string instead of append because WSGI spawns 2 threads and
     #duplicates this process, leading to a double append of string
     querystring = [""] * 4
@@ -62,8 +94,8 @@ class Songs:
 
         Songs.params['musicalId'] = musicalId
 
-        db.execute("SELECT DISTINCT role FROM songs WHERE musicalId=%(musicalId)s AND pendingNon=%(pendingNon)s", Songs.params)
-        data = db.fetchall()
+        query = "SELECT DISTINCT role FROM songs WHERE musicalId=%(musicalId)s AND pendingNon=%(pendingNon)s"
+        data = connect_db(query, Songs.params, 2)
         return data
 
     def query_table(self):
@@ -81,8 +113,6 @@ class Songs:
             Songs.params['role'] = self.role
             Songs.querystring[3] = " AND songs.role = %(role)s"
 
-        conn = MySQLdb.connect(**config)
-        db = conn.cursor(MySQLdb.cursors.DictCursor)
         joinedString = " ".join(Songs.querystring)
 
         query = "SELECT musicals.musical, songs.songId, songs.musicalId, \
@@ -91,9 +121,8 @@ class Songs:
         songs.spotifyId, songs.spotifyPrev, songs.pendingNon, songs.created\
         FROM songs INNER JOIN musicals ON musicals.Id = songs.musicalId WHERE ({})".format(joinedString)
 
-        db.execute(query, Songs.params)
-        songlist = db.fetchall()
-        return songlist
+        songList = connect_db(query, Songs.params, 2)
+        return songList
 
     def remove_song(self):
         Songs.params['songId'] = self.songId
@@ -138,11 +167,7 @@ class Musicals:
         Musicals.params['musical'] = musicalName
         query = "SELECT Id FROM musicals WHERE musical=%(musical)s"
 
-        conn = MySQLdb.connect(**config)
-        db = conn.cursor()
-        db.execute(query, Musicals.params)
-        musicalId = db.fetchone()
-
+        musicalId = connect_db(query, Musicals.params, 1)
         return musicalId
 
     def remove_musical(self):
@@ -168,10 +193,7 @@ class Musicals:
         musicals.lyricist, musicals.genre, musicals.production_year, musicals.plot, musicals.pendingNon, musicals.created\
         FROM musicals WHERE ({})".format(joinedString)
 
-        conn = MySQLdb.connect(**config)
-        db = conn.cursor(MySQLdb.cursors.DictCursor)
-        db.execute(query, Musicals.params)
-        musicalList = db.fetchall()
+        musicalList = connect_db(query, Musicals.params, 2)
         return musicalList
 
 class Users:
@@ -218,14 +240,13 @@ class Users:
         query = "SELECT users.userId, users.firstName, users.lastName, users.userEmail, users.password\
         FROM users WHERE {}".format(joinedString)
 
-        conn = MySQLdb.connect(**config)
-        db = conn.cursor(MySQLdb.cursors.DictCursor)
-        db.execute(query, Users.params)
-        userList = db.fetchone()
+        userList = connect_db(query, Users.params, 1)
         return userList
 
-def connect_db(query, params):
-    conn = MySQLdb.connect(**config)
-    db = conn.cursor()
-    db.execute(query, params)
-    conn.commit()
+class GMailHandler(logging.Handler):
+    def emit(self, record):
+        record = self.format(record)
+        try:
+            email_spyro(record, "#")
+        except:
+            raise

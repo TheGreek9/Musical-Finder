@@ -1,4 +1,6 @@
 import MySQLdb
+import logging
+import logging.config
 from flask import Flask, jsonify, redirect, render_template, request, url_for, session
 from flask_jsglue import JSGlue
 from flask_session import Session
@@ -8,11 +10,28 @@ from flask_bcrypt import Bcrypt
 from flaskext.mysql import MySQL
 from helpers import *
 from classes import *
+from databaseconfig import errorLoggerFile
 
 # configure application
 app = Flask(__name__)
 JSGlue(app)
 mysql = MySQL()
+baseLogger = logging.getLogger()
+
+#configure error loggers
+gm = GMailHandler()
+gm.setLevel(logging.DEBUG)
+gmFormatter = logging.Formatter('%(name)s called: Problem with %(funcName)s function in %(filename)s')
+gm.setFormatter(gmFormatter)
+
+fh = logging.FileHandler(errorLoggerFile)
+fh.setLevel(logging.DEBUG)
+fhFormatter = logging.Formatter("File: '%(pathname)s'\n%(asctime)s Failed: Line %(lineno)d in %(filename)s\n\
+Error: %(message)s\n")
+fh.setFormatter(fhFormatter)
+
+baseLogger.addHandler(gm)
+baseLogger.addHandler(fh)
 
 # ensure responses aren't cached
 if app.config["DEBUG"]:
@@ -34,12 +53,12 @@ app.config["JSONIFY_PRETTY _REGULAR"] = False
 def index():
 
     if request.method == "POST":
-        if get_text("musical") == "All Musicals":
-            if get_text("musicalSongs") and not get_text("nonMusicalSongs"):
+        if request.form.get("musical") == "All Musicals":
+            if request.form.get("musicalSongs") and not request.form.get("nonMusicalSongs"):
 
                 songList = Songs("N/A","musical").query_table()
 
-            elif not get_text("musicalSongs") and get_text("nonMusicalSongs"):
+            elif not request.form.get("musicalSongs") and request.form.get("nonMusicalSongs"):
 
                 songList = Songs("N/A","non musical").query_table()
 
@@ -50,20 +69,20 @@ def index():
             return render_template("allresults.html", songList=songList)
 
         else:
-            music = '%' + get_text("musical") + '%'
+            music = '%' + request.form.get("musical") + '%'
             musicalList = Musicals("N/A", music).query_table()
 
-            role = get_text("role")
+            role = request.form.get("role")
 
             if len(musicalList) != 1:
                 return render_template("searcherror.html")
 
             if role == "All Roles":
-                if get_text("musicalSongs") and not get_text("nonMusicalSongs"):
+                if request.form.get("musicalSongs") and not request.form.get("nonMusicalSongs"):
 
                     songList = Songs("N/A", "musical", musicalList[0]["Id"]).query_table()
 
-                elif not get_text("musicalSongs") and get_text("nonMusicalSongs"):
+                elif not request.form.get("musicalSongs") and request.form.get("nonMusicalSongs"):
 
                     songList = Songs("N/A", "non musical", musicalList[0]["Id"]).query_table()
 
@@ -74,11 +93,11 @@ def index():
                 return render_template("results.html", musicalList=musicalList, songList=songList)
 
             else:
-                if get_text("musicalSongs") and not get_text("nonMusicalSongs"):
+                if request.form.get("musicalSongs") and not request.form.get("nonMusicalSongs"):
 
                     songList = Songs("N/A", "musical", musicalList[0]["Id"], role).query_table()
 
-                elif not get_text("musicalSongs") and get_text("nonMusicalSongs"):
+                elif not request.form.get("musicalSongs") and request.form.get("nonMusicalSongs"):
 
                     songList = Songs("N/A","non musical", musicalList[0]["Id"], role).query_table()
 
@@ -89,7 +108,14 @@ def index():
                 return render_template("results.html", musicalList=musicalList, songList=songList, pickedRole=role)
 
     else:
-        return render_template("search.html")
+        try:
+            test_connection()
+            return render_template("search.html")
+        except Exception:
+            return apology("There was a problem connecting to our database. \
+            We have logged the issue and are working as quickly as we can to fix it.\
+            Please try back again soon.")
+
 
 @app.route("/changepassword", methods=["GET", "POST"])
 @login_required
@@ -124,7 +150,7 @@ def getspotifyinfo():
     if request.method == "POST":
 
         originalSongId = request.args.get("id")
-        chosenSongId = int(get_text("songCheck"))
+        chosenSongId = int(request.form.get("songCheck"))
         chosenSongId -= 1
         chosenSpotifyId = spotifyDict[chosenSongId]['id']
         chosenSpotifyPrev = spotifyDict[chosenSongId]['preview']
@@ -180,14 +206,13 @@ def logout():
 def newSong():
     if request.method == "POST":
 
-        if get_text("songName"):
+        if request.form.get("songName"):
 
-            idData = Musicals().get_Id(get_text("newMusical"))
+            idData = Musicals().get_Id(request.form.get("newMusical"))
 
-            Songs('pending').create_song(request.form, idData, session["user_id"])
+            Songs('pending').create_song(request.form, idData['Id'], session["user_id"])
 
-            email_spyro()
-
+            email_spyro("There's a new song addition to the database", "http://thegreek9.pythonanywhere.com/login?next=review")
             return render_template('submissionsong.html')
 
         else:
@@ -200,11 +225,11 @@ def newSong():
 def newmusical():
     if request.method == "POST":
 
-        if get_text("musicalName"):
+        if request.form.get("musicalName"):
 
             Musicals('pending').create_musical(request.form, session["user_id"])
 
-            email_spyro()
+            email_spyro("There's a new musical addition to the database", "http://thegreek9.pythonanywhere.com/login?next=review")
 
             return render_template("submissionmusical.html")
 

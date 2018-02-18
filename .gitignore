@@ -10,3 +10,5 @@ __pycache__/
 test*.py
 Website Files/
 gotomysql.sh
+logging.*
+errors.log
