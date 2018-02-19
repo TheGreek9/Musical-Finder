@@ -20,14 +20,16 @@ def apology(message, subMessage="Error", title="We're Sorry", endpoint = "Endpoi
         Please try back again soon."
 
     if endpoint == "Endpoint":
-        endpoint = request.endpoint
+        try:
+            endpoint = request.endpoint
+        except:
+            helpersLogger.error("Unable to get endpoint in apology function")
+            endpoint = "index"
+    elif enpoint == "review":
+        endpoint = "index"
 
-    if endpoint == "review":
-        return render_template("error.html", title=title, message=message, subMessage=subMessage,
-        endpoint="index", btnName=btnName)
-    else:
-        return render_template("error.html", title=title, message=message, subMessage=subMessage,
-        endpoint=endpoint, btnName=btnName)
+    return render_template("error.html", title=title, message=message, subMessage=subMessage,
+    endpoint=endpoint, btnName=btnName)
 
 def check_password(hashed, candidate):
     result = bcrypt.check_password_hash(hashed, candidate)
@@ -44,12 +46,14 @@ def email_spyro(message, site):
     msg['Subject'] = "New Addition to Database"
     body = '<p>' + str(message) + ' To view, <a href="' + str(site) + '">click here</a></p>'
     msg.attach(MIMEText(body, 'html'))
-
-    """server_ssl = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-    server_ssl.ehlo()
-    server_ssl.login(fromaddr, password)
-    server_ssl.sendmail(fromaddr, toaddr, msg.as_string())
-    server_ssl.quit()"""
+    try:
+        """server_ssl = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+        server_ssl.ehlo()
+        server_ssl.login(fromaddr, password)
+        server_ssl.sendmail(fromaddr, toaddr, msg.as_string())
+        server_ssl.quit()"""
+    except Exception:
+        helpersLogger.error('Unable to send email')
 
 def getSong(song, artist = ""):
 

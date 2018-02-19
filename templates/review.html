@@ -26,7 +26,7 @@
         </tr>
         {% for song in songList %}
         <tr>
-          <td><input type="checkbox" name="checkingSong" value="{{song.songId}}"></td>
+          <td><input type="checkbox" name="checkedSong" value="{{song.songId}}"></td>
           <td>{{song.song_title}}</td>
           <td>{{song.musical}}</td>
           <td>{{song.role}}</td>
@@ -67,7 +67,7 @@
         </tr>
         {% for musical in musicalList %}
         <tr>
-          <td><input type="checkbox" name="checkingMusical" value="{{musical.Id}}"></td>
+          <td><input type="checkbox" name="checkedMusical" value="{{musical.Id}}"></td>
           <td>{{musical.musical}}</td>
           <td>{{musical.playwright}}</td>
           <td>{{musical.composer}}</td>

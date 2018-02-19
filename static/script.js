@@ -1,4 +1,27 @@
 $(document).ready(function() {
+  // Add scrollspy to <body>
+  $('body').scrollspy({
+    target: ".navbar",
+    offset: 50
+  });
+
+  // Add smooth scrolling on all links inside the navbar
+  $("#myNavbar").find("a").on('click', function(event) {
+    // Make sure this.hash has a value before overriding default behavior
+    if ($(this).prop("hash") !== "") {
+      // Prevent default anchor click behavior
+      event.preventDefault();
+
+      var hash = $(this).prop("hash")
+      // Using jQuery's animate() method to add smooth page scroll
+      // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+      $('html, body').animate({
+        scrollTop: $(hash).offset().top
+      }, 1000);
+    } // End if
+  });
+
+
   $.fn.validator.Constructor.FOCUS_OFFSET = '100';
   var newsongMusical = ""
 
@@ -49,22 +72,24 @@ $(document).ready(function() {
   });
 
   var validated = false;
+  var formName = "#"
 
   $("#submit").click(function() {
+    formName.append($(this).parents("form").attr('id'))
     if (validated == false) {
-      $("#newform").validator('validate');
+      $(formName).validator('validate');
     } else {
-      $("#newform").submit();
+      $(formName).submit();
     }
   });
 
-  $("#newform").on("invalid.bs.validator", function() {
+  $(formName).on("invalid.bs.validator", function() {
     $("#submit").css('opacity', 0.5);
     $("#submit").css('cursor', 'not-allowed');
     validated = false;
   });
 
-  $("#newform").on("valid.bs.validator", function() {
+  $(formName).on("valid.bs.validator", function() {
     $("#submit").css('opacity', 1);
     $("#submit").css('cursor', 'default');
     validated = true;

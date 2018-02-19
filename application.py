@@ -184,6 +184,8 @@ def login():
 
         if userinfo == None:
             return render_template("login.html", loginError=True)
+        elif userinfo == -1:
+            return apology("Error while attempting to login")
 
         result = check_password(userinfo['password'], request.form.get("password"))
 
@@ -214,17 +216,17 @@ def logout():
 def newSong():
     if request.method == "POST":
 
-        if request.form.get("songName"):
+        idData = Musicals().get_Id(request.form.get("newMusical"))
 
-            idData = Musicals().get_Id(request.form.get("newMusical"))
+        if idDate == -1:
+            return apology("We were unable to find that mucsical")
 
-            Songs('pending').create_song(request.form, idData['Id'], session["user_id"])
+        Songs('pending').create_song(request.form, idData['Id'], session["user_id"])
 
-            email_spyro("There's a new song addition to the database", "http://thegreek9.pythonanywhere.com/login?next=review")
-            return render_template('submissionsong.html')
+        email_spyro("There's a new song addition to the database", "http://thegreek9.pythonanywhere.com/login?next=review")
 
-        else:
-            return apology("Something went wrong")
+        return render_template("submissionconfirm.html", newitem="newsong")
+
     else:
         return render_template("newsong.html")
 
@@ -233,16 +235,12 @@ def newSong():
 def newmusical():
     if request.method == "POST":
 
-        if request.form.get("musicalName"):
+        Musicals('pending').create_musical(request.form, session["user_id"])
 
-            Musicals('pending').create_musical(request.form, session["user_id"])
+        email_spyro("There's a new musical addition to the database", "http://thegreek9.pythonanywhere.com/login?next=review")
 
-            email_spyro("There's a new musical addition to the database", "http://thegreek9.pythonanywhere.com/login?next=review")
+        return render_template("submissionconfirm.html", newitem="newmusical")
 
-            return render_template("submissionmusical.html")
-
-        else:
-            return apology("Something went wrong")
     else:
 
         return render_template("newmusical.html")
@@ -259,19 +257,26 @@ def register():
         userinfo = Users(None, request.form.get("userEmail")).query_table()
 
         if userinfo != None:
-            return apology("Invalid Username")
+            return render_template("register.html", registerError=True)
+        elif userinfo == -1:
+            return apology("There was an error trying to register")
 
         Users().add_user_to_db(request.form)
 
         userinfo = Users(None, request.form.get("userEmail")).query_table()
 
-        session["user_id"] = userinfo['userId']
-        session["first_name"] = userinfo['firstName']
+        if userinfo == None:
+             baseLogger.error("User info was not found after user registered. Unable to add info to session.")
+        elif userinfo == -1:
+            baseLogger.error("Class returned error when trying to access user info. Not able to add info to session.")
+        else:
+            session["user_id"] = userinfo['userId']
+            session["first_name"] = userinfo['firstName']
 
         return redirect_dest("index")
 
     else:
-        return render_template("register.html")
+        return render_template("register.html", registerError=False)
 
 @app.route("/review", methods=["GET", "POST"])
 @login_required
@@ -279,74 +284,95 @@ def review():
     if request.method == "POST":
         if session["user_id"] == 1:
             if 'addSong' in request.form or 'deleteSong' in request.form:
-                checking = request.form.getlist("checkingSong")
+                checked = request.form.getlist("checkedSong")
 
                 if 'addSong' in request.form:
-                    for checked in checking:
-                        Songs('N/A', None, None, None, int(checked)).add_song_to_db()
+                    for songNum in checked:
+                        Songs('N/A', None, None, None, int(songNum)).add_song_to_db()
 
                 elif 'deleteSong' in request.form:
-                    for checked in checking:
-                        Songs('pending', None, None, None, int(checked)).remove_song()
+                    for songNum in checked:
+                        Songs('pending', None, None, None, int(songNum)).remove_song()
 
             elif 'addMusical' in request.form or 'deleteMusical' in request.form:
-                checking = request.form.getlist("checkingMusical")
+                checked = request.form.getlist("checkedMusical")
 
                 if 'addMusical' in request.form:
-                    for checked in checking:
+                    for musicalNum in checked:
 
-                        Musicals('N/A', None, int(checked)).add_musical_to_db()
+                        Musicals('N/A', None, int(musicalNum)).add_musical_to_db()
 
                 elif 'deleteMusical' in request.form:
-                    for checked in checking:
+                    for checked in checked:
 
-                        Musicals('pending', None, int(checked)).remove_musical()
+                        Musicals('pending', None, int(musicalNum)).remove_musical()
 
             else:
-                return apology("Somtething's wrong")
+                assert("Add Song or Delete Song was not in POST request sent to review. But POST was sent anyway")
 
             songList = Songs("pending").query_table()
 
+            if songList == -1:
+                return apology("There was an error when calling query table from Song class", "Check error logs", "Error", None)
+
             musicalList = Musicals("pending").query_table()
 
+            if musicalList == -1:
+                return apology("There was an error when calling query table from Song class", "Check error logs", "Error", None)
 
             return render_template("review.html", songList=songList, musicalList=musicalList)
+
         else:
-            return apology("You are not authorized to view this")
+            return redirect(url_for("index"))
     else:
         if session["user_id"] == 1:
 
             songList = Songs("pending").query_table()
 
+            if songList == -1:
+                return apology("There was an error when calling query table from Song class", "Check error logs", "Error", None)
+
             musicalList = Musicals("pending").query_table()
+
+            if musicalList == -1:
+                return apology("There was an error when calling query table from Song class", "Check error logs", "Error", None)
 
             return render_template("review.html", songList=songList, musicalList=musicalList)
         else:
-            return apology("You are not authorized to view this")
+            return redirect(url_for("index"))
 
 @app.route("/roles", methods=["GET"])
 def roles():
 
-    try:
+    musicalId = Musicals().get_Id(request.args.get("music"))
 
-        musicalId = Musicals().get_Id(request.args.get("music"))
-        data = Songs("N/A").distinct_role(musicalId)
-
-        return jsonify(data)
-    except:
+    if musicalId == None:
         return jsonify([])
+    elif musicalId == -1:
+        return jsonify([])
+
+    data = Songs("N/A").distinct_role(musicalId)
+
+    if data == None:
+        return jsonify([])
+    elif data == -1:
+        return jsonify([])
+    else:
+        return jsonify(data)
 
 @app.route("/search", methods=["GET"])
 def search():
     urlstring = "%" + request.args.get("que") + "%"
 
     if urlstring != "%%":
-        data = Musicals("N/A", urlstring).query_table()
 
+        data = Musicals("N/A", urlstring).query_table()
+        
+        if data == None:
+            return jsonify([])
+        elif data == -1:
+            return jsonify([])
+        else:
+            return jsonify(data)
     else:
         return jsonify([])
-
-    try:
-        return jsonify(data)
-    except:
-        return jsonify(username="somethings wrong")

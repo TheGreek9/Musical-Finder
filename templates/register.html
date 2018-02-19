@@ -4,6 +4,11 @@
     <p style="text-decoration: underline; text-align: center;">Register</p>
     <fieldset>
       <div class="form-group">
+        {% if registerError == True %}
+        <div class="panel panel-danger" style="margin-bottom: 10px;">
+          <div class="panel-heading">Incorrect Username or Password</div>
+        </div>
+        {% endif %}
         <label for="first name" class="control-label">Name</label>
         <input autocomplete="off" autofocus class="form-control" name="firstName" placeholder="Name" type="text" data-error="Please insert your first name" required>
         <div class="help-block with-errors"></div>
