@@ -75,7 +75,8 @@ def index():
             role = request.form.get("role")
 
             if len(musicalList) != 1:
-                return render_template("searcherror.html")
+                return apology("We apologize but we currently do not have that musical in our database.",
+                "Would you like to add it?", "Not Found", request.endpoint, "Add Musical")
 
             if role == "All Roles":
                 if request.form.get("musicalSongs") and not request.form.get("nonMusicalSongs"):
@@ -90,7 +91,6 @@ def index():
 
                     songList = Songs("N/A", None, musicalList[0]["Id"]).query_table()
 
-                return render_template("results.html", musicalList=musicalList, songList=songList)
 
             else:
                 if request.form.get("musicalSongs") and not request.form.get("nonMusicalSongs"):
@@ -105,6 +105,9 @@ def index():
 
                     songList = Songs("N/A", None, musicalList[0]["Id"], role).query_table()
 
+            if songList == -1 or musicalList == -1:
+                return apology("There was an error with our database", "Error", "We're Sorry", None)
+            else:
                 return render_template("results.html", musicalList=musicalList, songList=songList, pickedRole=role)
 
     else:
@@ -112,9 +115,7 @@ def index():
             test_connection()
             return render_template("search.html")
         except Exception:
-            return apology("There was a problem connecting to our database. \
-            We have logged the issue and are working as quickly as we can to fix it.\
-            Please try back again soon.")
+            return apology("There was a problem connecting to our database", "Error", "We're Sorry", None)
 
 
 @app.route("/changepassword", methods=["GET", "POST"])
@@ -123,12 +124,17 @@ def changepassword():
 
     if request.method == "POST":
 
+        if not session["user_id"]:
+            baseLogger.error('No session user ID when changing password')
+            return apology("There was an error with user information", "Please log in and try again",
+            "We're Sorry")
+
         userinfo = Users(session["user_id"]).query_table()
 
         result = check_password(userinfo['password'], request.form.get("old password"))
 
         if result == False:
-            return apology("Invalid Credentials")
+            return render_template("changepassword.html", passError=True)
 
         newPassword = hash_password(request.form.get("new password"))
 
@@ -141,11 +147,6 @@ def changepassword():
 
 @app.route("/getspotifyinfo", methods=["GET", "POST"])
 def getspotifyinfo():
-
-    track = request.args.get("track")
-    artist = request.args.get("artist")
-
-    spotifyDict = getSong(track, artist)
 
     if request.method == "POST":
 
@@ -160,8 +161,15 @@ def getspotifyinfo():
         return redirect(url_for('review'))
 
     else:
+        track = request.args.get("track")
+        artist = request.args.get("artist")
 
-        return render_template("reviewspotify.html", spotifyDict=spotifyDict)
+        spotifyDict = getSong(track, artist)
+
+        if spotifyDict == -1:
+            return apology("Not able to get spotifyDict in /getspotify route", "Check the error logs")
+        else:
+            return render_template("reviewspotify.html", spotifyDict=spotifyDict)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -175,12 +183,12 @@ def login():
         userinfo = Users(None, request.form.get("userEmail")).query_table()
 
         if userinfo == None:
-            return apology("Username or Password incorrect")
+            return render_template("login.html", loginError=True)
 
         result = check_password(userinfo['password'], request.form.get("password"))
 
         if result == False:
-            return apology("Username or Password incorrect")
+            return render_template("login.html", loginError=True)
 
         # remember which user has logged in
         session["user_id"] = userinfo["userId"]
@@ -191,7 +199,7 @@ def login():
 
     # else if user reached route via GET (as by clicking a link or via redirect)
     else:
-        return render_template("login.html")
+        return render_template("login.html", error=False)
 
 @app.route("/logout")
 def logout():

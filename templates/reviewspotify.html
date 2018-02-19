@@ -13,7 +13,11 @@
     {% for item in spotifyDict %}
     <tr>
       <fieldset>
+        {% if item.num == 1 %}
+        <td><input type="radio" name="songCheck" value={{item.num}} checked> Musical</td>
+        {% else %}
         <td><input type="radio" name="songCheck" value={{item.num}}> Musical</td>
+        {% endif %}
       </fieldset>
       <td>{{item.num}}</td>
       <td>{{item.track}}</td>

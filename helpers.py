@@ -11,13 +11,23 @@ from flask_bcrypt import Bcrypt
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 
-def apology(text):
-    endpoint = request.endpoint
+helpersLogger = logging.getLogger('baseLogger')
+helpersLogger.setLevel(logging.ERROR)
+
+def apology(message, subMessage="Error", title="We're Sorry", endpoint = "Endpoint", btnName = "Go Back"):
+    if subMessage == "Error":
+        subMessage="We have logged the issue and are working as quickly as we can to fix it. \
+        Please try back again soon."
+
+    if endpoint == "Endpoint":
+        endpoint = request.endpoint
 
     if endpoint == "review":
-        return render_template("incorrect.html", incorrect=text, endpoint="index")
+        return render_template("error.html", title=title, message=message, subMessage=subMessage,
+        endpoint="index", btnName=btnName)
     else:
-        return render_template("incorrect.html", incorrect=text, endpoint=endpoint)
+        return render_template("error.html", title=title, message=message, subMessage=subMessage,
+        endpoint=endpoint, btnName=btnName)
 
 def check_password(hashed, candidate):
     result = bcrypt.check_password_hash(hashed, candidate)
@@ -47,11 +57,15 @@ def getSong(song, artist = ""):
     client_Key = passconfig['client_key']
 
     authReq = requests.post("https://accounts.spotify.com/api/token", data="grant_type=client_credentials",
-        headers={'Content-type': 'application/x-www-form-urlencoded'}, auth=(client_Id, client_Key))
+    headers={'Content-type': 'application/x-www-form-urlencoded'}, auth=(client_Id, client_Key))
 
-    authKey = authReq.json()['access_token']
+    authKey = authReq.json()
 
-    authHead = {"Authorization": "Bearer " + authKey, 'Content-type': 'application/json'}
+    if 'error' in authKey:
+        helpersLogger.error('Error Spotify Authentication: %s', authKey['error'])
+        return -1
+
+    authHead = {"Authorization": "Bearer " + authKey['access_token'], 'Content-type': 'application/json'}
 
     trackSearch = song.replace(" ","%20")
     if artist:
@@ -64,6 +78,10 @@ def getSong(song, artist = ""):
 
     spotifyInfo = requests.get(urlSearch, headers=authHead)
     spotifyInfo = spotifyInfo.json()
+
+    if 'error' in spotifyInfo:
+        helpersLogger.error("Error Spotify Track/Artist Search: %s", spotifyInfo['error']['message'])
+        return -1
 
     spotifyDict = []
 
