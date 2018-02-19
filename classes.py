@@ -4,7 +4,7 @@ import logging.handlers
 from flaskext.mysql import MySQL
 from flask import Flask
 from databaseconfig import config
-from helpers import hash_password, apology, email_spyro
+from helpers import hash_password, email_spyro
 
 mysql = MySQL()
 
@@ -17,8 +17,9 @@ def connect_db(query, params, fetch = None):
         db = conn.cursor(MySQLdb.cursors.DictCursor)
         db.execute(query, params)
     except Exception:
-        classLogger.error('db.execute function error')
-        raise
+        classLogger.error('db.execute function error\nQuery:%s\nParameters:%s', query, params)
+        return -1
+
 
     try:
         if fetch == 1:
@@ -29,7 +30,8 @@ def connect_db(query, params, fetch = None):
             conn.commit()
     except Exception:
         classLogger.error('Error with db fetching functions')
-        raise
+        return -1
+
 
 def test_connection():
     try:
@@ -37,7 +39,6 @@ def test_connection():
         db = conn.cursor(MySQLdb.cursors.DictCursor)
     except Exception:
         classLogger.error('Error with trying to initially connect to database')
-        apology("There was a problem connecting testing")
         raise
 
 class Songs:
