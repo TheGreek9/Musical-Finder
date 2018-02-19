@@ -48,6 +48,11 @@
   height: 37px;
 }
 
+a.titlebutton:link, a.titlebutton:visited, a.titlebutton:hover, a.titlebutton:active {
+  color: white;
+  text-decoration: none
+}
+
 input[type=submit] {
   font-family: 'Alex Brush', cursive;
   font-size: 25px;
