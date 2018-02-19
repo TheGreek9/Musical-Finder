@@ -1,0 +1,32 @@
+File: '/Users/Spyro/Developer/final/helpers.py'
+2018-02-18 17:56:23,309 Failed: Line 63 in helpers.py
+Error: Error Spotify API: Not able to get authorization info
+
+File: '/Users/Spyro/Developer/final/helpers.py'
+2018-02-18 17:57:15,758 Failed: Line 67 in helpers.py
+Error: Error Spotify API: Not able to get authorization info
+
+File: '/Users/Spyro/Developer/final/helpers.py'
+2018-02-18 17:58:06,049 Failed: Line 65 in helpers.py
+Error: Error Spotify API: Not able to get authorization info
+
+File: '/Users/Spyro/Developer/final/helpers.py'
+2018-02-18 18:05:29,968 Failed: Line 83 in helpers.py
+Error: Error Spotify API: Only valid bearer authentication supported
+
+File: '/Users/Spyro/Developer/final/helpers.py'
+2018-02-18 18:11:09,416 Failed: Line 69 in helpers.py
+Error: Error Spotify Authentication: invalid_client
+
+File: '/Users/Spyro/Developer/final/helpers.py'
+2018-02-18 18:11:34,296 Failed: Line 68 in helpers.py
+Error: Error Spotify Authentication: invalid_client
+
+File: '/Users/Spyro/Developer/final/helpers.py'
+2018-02-18 18:14:13,027 Failed: Line 83 in helpers.py
+Error: Error Spotify Track/Artist Search: Only valid bearer authentication supported
+
+File: '/Users/Spyro/Developer/final/helpers.py'
+2018-02-18 18:15:34,401 Failed: Line 83 in helpers.py
+Error: Error Spotify Track/Artist Search: Only valid bearer authentication supported
+

@@ -1,0 +1,56 @@
+songId,musicalId,userId,song_title,role,singer,artist,genre,original musical,composer,musicalNon,sheet music,spotifyId,spotifyPrev,pendingNon,created
+1,1,1,Today is the First Day of the Rest of My Life,Ensemble,Character,,,"Starting Here, Starting Now",David Shire,musical,,0pIphMXWEkNFaQtjBGIrH2,https://p.scdn.co/mp3-preview/f0d01fd9367e61db359cae172f1c25796df81916?cid=aa65d606c18745a0b0ee857a667fd544,pending,0000-00-00 00:00:00
+2,4,1,Today is the First Day of the Rest of My Life,Ensemble,Character,,,"Starting Here, Starting Now",David Shire,musical,,0pIphMXWEkNFaQtjBGIrH2,https://p.scdn.co/mp3-preview/f0d01fd9367e61db359cae172f1c25796df81916?cid=aa65d606c18745a0b0ee857a667fd544,pending,0000-00-00 00:00:00
+3,2,1,Today is the First Day of the Rest of My Life,Ensemble,Character,,,"Starting Here, Starting Now",David Shire,musical,,0pIphMXWEkNFaQtjBGIrH2,https://p.scdn.co/mp3-preview/f0d01fd9367e61db359cae172f1c25796df81916?cid=aa65d606c18745a0b0ee857a667fd544,pending,0000-00-00 00:00:00
+4,1,1,You Don’t Own Me,Ensemble,,Lesley Gore,Pop,,,non musical,,5ILumokzwPbOjc78BovKEZ,https://p.scdn.co/mp3-preview/f50bea3145607d4686dcecf0cf09c923ba576c76?cid=aa65d606c18745a0b0ee857a667fd544,pending,0000-00-00 00:00:00
+5,3,1,Meadowlark,Mother,Genevieve,,,The Bakers Wife,Stephen Schwartz,musical,,1W6Hn1LShCGpNL4pdWGTpP,https://p.scdn.co/mp3-prev,pending,0000-00-00 00:00:00
+6,9,1,Shine,Violet,Percy Talbott,,Folk Musical Theatre,The Spitfire Grill,James Valcq & Fred Alley,musical,,,,pending,0000-00-00 00:00:00
+7,13,1,Shine,Violet,Percy Talbott,,Folk Musical Theatre,The Spitfire Grill,James Valcq & Fred Alley,musical,,,,pending,0000-00-00 00:00:00
+8,2,1,Tell Me On a Sunday,Lucille,The Girl,,Traditional Musical Theatre,Tell Me on a Sunday,Andrew Lloyd Webber,musical,,,,pending,0000-00-00 00:00:00
+9,6,1,Tell Me On a Sunday,Lucille,The Girl,,Traditional Musical Theatre,Tell Me on a Sunday,Andrew Lloyd Webber,musical,,,,pending,0000-00-00 00:00:00
+10,7,1,Tell Me On a Sunday,Lucille,The Girl,,Traditional Musical Theatre,Tell Me on a Sunday,Andrew Lloyd Webber,musical,,,,pending,0000-00-00 00:00:00
+11,1,1,Legally Blonde Remix,,Vivian,,Pop,Legally Blonde the Musical,Laurence O'Keefe and Nell Benjamin,musical,,,,pending,0000-00-00 00:00:00
+12,10,1,Legally Blonde Remix,,Vivian,,Pop,Legally Blonde the Musical,Laurence O'Keefe and Nell Benjamin,musical,,,,pending,0000-00-00 00:00:00
+13,11,1,Legally Blonde Remix,,Vivian,,Pop,Legally Blonde the Musical,Laurence O'Keefe and Nell Benjamin,musical,,,,pending,0000-00-00 00:00:00
+14,5,1,Carrie,,Carrie,,Pop Contemporary,Carrie the Musical,Michael Gore & Dean Pitchford,musical,,,,pending,0000-00-00 00:00:00
+15,9,1,Carrie,,Carrie,,Pop Contemporary,Carrie the Musical,Michael Gore & Dean Pitchford,musical,,,,pending,0000-00-00 00:00:00
+16,10,1,Carrie,,Carrie,,Pop Contemporary,Carrie the Musical,Michael Gore & Dean Pitchford,musical,,,,pending,0000-00-00 00:00:00
+17,10,1,Rolling in the Deep,,,Adele Adkins,Pop,,Paul Epworth & Adele Adkins,non musical,,,,pending,0000-00-00 00:00:00
+18,11,1,Rolling in the Deep,,,Adele Adkins,Pop,,Paul Epworth & Adele Adkins,non musical,,,,pending,0000-00-00 00:00:00
+19,12,1,Rolling in the Deep,,,Adele Adkins,Pop,,Paul Epworth & Adele Adkins,non musical,,,,pending,0000-00-00 00:00:00
+20,10,1,Over the Love,,,Florence & the Machine,Pop,,Florence Welch & Aaron Foulds,non musical,,,,pending,0000-00-00 00:00:00
+21,11,1,Over the Love,,,Florence & the Machine,Pop,,Florence Welch & Aaron Foulds,non musical,,,,pending,0000-00-00 00:00:00
+22,12,1,Over the Love,,,Florence & the Machine,Pop,,Florence Welch & Aaron Foulds,non musical,,,,pending,0000-00-00 00:00:00
+23,1,1,In Your Eyes,,,Peter Gabriel,Pop,,Peter Gabriel,non musical,,,,pending,0000-00-00 00:00:00
+24,5,1,In Your Eyes,,,Peter Gabriel,Pop,,Peter Gabriel,non musical,,,,pending,0000-00-00 00:00:00
+25,11,1,In Your Eyes,,,Peter Gabriel,Pop,,Peter Gabriel,non musical,,,,pending,0000-00-00 00:00:00
+26,1,1,Astonishing,,Jo March,,Contemporary ,Little Women,Jason Howland & Mindi Dickstein,musical,,,,pending,0000-00-00 00:00:00
+27,9,1,Astonishing,,Jo March,,Contemporary ,Little Women,Jason Howland & Mindi Dickstein,musical,,,,pending,0000-00-00 00:00:00
+28,10,1,Astonishing,,Jo March,,Contemporary ,Little Women,Jason Howland & Mindi Dickstein,musical,,,,pending,0000-00-00 00:00:00
+29,4,1,My Heart Belongs to Daddy,,Dolly Winslow,,Character,Leave It to Me,Cole Porter,musical,,,,pending,0000-00-00 00:00:00
+30,14,1,My Heart Belongs to Daddy,,Dolly Winslow,,Character,Leave It to Me,Cole Porter,musical,,,,pending,0000-00-00 00:00:00
+31,8,1,Pretty Funny,,Rose,,Contemporary,Dogfight,Benj Pasel & Justin Paul,musical,,,,pending,0000-00-00 00:00:00
+32,13,1,Pretty Funny,,Rose,,Contemporary,Dogfight,Benj Pasel & Justin Paul,musical,,,,pending,0000-00-00 00:00:00
+33,4,1,Gorgeous,,Ella,,Classical Character,The Apple Tree,Jerry Bock & Sheldon Harnick,musical,,,,pending,0000-00-00 00:00:00
+34,6,1,Gorgeous,,Ella,,Classical Character,The Apple Tree,Jerry Bock & Sheldon Harnick,musical,,,,pending,0000-00-00 00:00:00
+35,14,1,Gorgeous,,Ella,,Classical Character,The Apple Tree,Jerry Bock & Sheldon Harnick,musical,,,,pending,0000-00-00 00:00:00
+36,1,1,Happy to Keep His Dinner Warm,,Rosemary,,,How to Succeed in Business Without Really Trying,Frank Loesser,musical,,,,pending,0000-00-00 00:00:00
+37,7,1,Happy to Keep His Dinner Warm,,Rosemary,,,How to Succeed in Business Without Really Trying,Frank Loesser,musical,,,,pending,0000-00-00 00:00:00
+38,1,1,Climbing Uphill,,Cathy,,Contemporary,The Last Five Years,Jason Robert Brown,musical,,,,pending,0000-00-00 00:00:00
+39,5,1,Climbing Uphill,,Cathy,,Contemporary,The Last Five Years,Jason Robert Brown,musical,,,,pending,0000-00-00 00:00:00
+40,10,1,Climbing Uphill,,Cathy,,Contemporary,The Last Five Years,Jason Robert Brown,musical,,,,pending,0000-00-00 00:00:00
+41,3,1,Two of a Kind,,Mae,,Jazz Contemporary,The Wild Party,Andrew Lippa,musical,,,,pending,0000-00-00 00:00:00
+42,3,1,Cry Me a River,,,Julie London,Jazz,,Arthur Hamilton,non musical,,,,pending,0000-00-00 00:00:00
+43,5,1,Here I Am,,Christine Colgate,,Comedy Musical,Dirty Rotten Scoundrels,David Yazbek,musical,,,,pending,0000-00-00 00:00:00
+44,6,1,I'll Forget You,,Marguerite,,,Scarlet Pimpernell,Frank Wildhorn & Nan Knighton ,musical,,,,pending,0000-00-00 00:00:00
+45,7,1,I'll Forget You,,Marguerite,,,Scarlet Pimpernell,Frank Wildhorn & Nan Knighton ,musical,,,,pending,0000-00-00 00:00:00
+46,5,1,No One Knows Who I Am,,Lucy Harris,,,Jekyll & Hyde,Frank Wildhorn & Leslie Bricusse,musical,,,,pending,0000-00-00 00:00:00
+47,3,1,Come Rain or Come Shine,,,Ella Fitzgerald,Jazz,,Harold Arlen ,non musical,,,,pending,0000-00-00 00:00:00
+48,4,1,The Green River,,,,Art Song,,John A. Carpenter,non musical,,,,pending,0000-00-00 00:00:00
+49,6,1,The Green River,,,,Art Song,,John A. Carpenter,non musical,,,,pending,0000-00-00 00:00:00
+50,3,1,Roxie,,Roxie Hart,,Jazz,Chicago,John Kander & Fred Ebb,musical,,,,pending,0000-00-00 00:00:00
+51,11,1,Creep,,,Radiohead,Punk,,Radiohead,non musical,,,,pending,0000-00-00 00:00:00
+52,5,1,The I Love You Song,,Olive Ostrovsky,,Contemporary,The 25th Annual Putnam County Spelling Bee,William Finn,musical,,,,pending,0000-00-00 00:00:00
+53,6,1,I Remember,,Ella,,Contemporary,Evening Primrose,Stephen Sondheim,musical,,,,pending,0000-00-00 00:00:00
+54,7,1,I Remember,,Ella,,Contemporary,Evening Primrose,Stephen Sondheim,musical,,,,pending,0000-00-00 00:00:00
+55,5,1,What More Do I Need?,Ensemble,Woman,,Contemporary,Marry Me A Little,Stephen Sondheim,musical,,,,pending,0000-00-00 00:00:00
