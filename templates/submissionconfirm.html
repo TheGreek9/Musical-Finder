@@ -1,0 +1,22 @@
+{% extends "layout.html" %} {% block main %}
+<div class="row">
+  <div class="col-md-6">
+    <h3>Thank You For Your Submission!</h3>
+    <p>Pending a review, we will add your submission to our database</p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-2">
+    <a href="{{url_for('index')}}" class="btn btn-default">Go Back</a>
+  </div>
+  <div class="col-md-2">
+    <a href="{{url_for(newitem)}}" class="btn btn-default">
+      {% if newItem == "newSong" %}
+        Add Another Song
+      {% else %}
+        Add Another Musical
+      {% endif %}
+    </a>
+  </div>
+</div>
+{% endblock %}
