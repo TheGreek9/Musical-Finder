@@ -3,6 +3,11 @@
   <form data-toggle="validator" action="{{ url_for('login', next=request.args.get('next')) }}" method="post">
     <fieldset>
       <div class="form-group">
+        {% if loginError == True %}
+        <div class="panel panel-danger" style="margin-bottom: 10px;">
+          <div class="panel-heading">Incorrect Username or Password</div>
+        </div>
+        {% endif %}
         <label for="username" class="control-label">Username</label>
         <input autocomplete="off" autofocus class="form-control" name="userEmail" placeholder="Username" type="text" data-error="Please enter your username" required>
         <div class="help-block with-errors"></div>
