@@ -1,0 +1,8 @@
+{% extends "layout.html" %} {% block main %}
+<div class="row">
+  <h2>{{title}}</h2>
+  <h4>{{message}}</h4>
+  <br>
+  <h4>{{subMessage}}</h4> {% if endpoint != None %}
+  <a href="{{ url_for(endpoint)}}" class="btn btn-default">{{btnName}}</a>{% endif %}
+</div> {% endblock %}
