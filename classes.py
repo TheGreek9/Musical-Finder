@@ -29,7 +29,7 @@ def connect_db(query, params, fetch = None):
         else:
             conn.commit()
     except Exception:
-        classLogger.error('Error with db fetching functions')
+        classLogger.error('Error with db fetching/commit functions')
         return -1
 
 
@@ -165,8 +165,8 @@ class Musicals:
         connect_db(query, Musicals.params)
 
     def get_Id(self, musicalName):
-        Musicals.params['musical'] = musicalName
-        query = "SELECT Id FROM musicals WHERE musical=%(musical)s"
+        Musicals.params['musical'] = "%" + musicalName + "%"
+        query = "SELECT Id FROM musicals WHERE musical LIKE %(musical)s"
 
         musicalId = connect_db(query, Musicals.params, 1)
         return musicalId
