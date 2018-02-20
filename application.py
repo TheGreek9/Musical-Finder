@@ -213,7 +213,7 @@ def logout():
 
 @app.route("/newsong", methods=["GET", "POST"])
 @login_required
-def newSong():
+def newsong():
     if request.method == "POST":
 
         idData = Musicals().get_Id(request.form.get("newMusical"))
@@ -303,7 +303,7 @@ def review():
                         Musicals('N/A', None, int(musicalNum)).add_musical_to_db()
 
                 elif 'deleteMusical' in request.form:
-                    for checked in checked:
+                    for musicalNum in checked:
 
                         Musicals('pending', None, int(musicalNum)).remove_musical()
 
@@ -367,7 +367,7 @@ def search():
     if urlstring != "%%":
 
         data = Musicals("N/A", urlstring).query_table()
-        
+
         if data == None:
             return jsonify([])
         elif data == -1:

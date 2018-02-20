@@ -25,7 +25,7 @@ def apology(message, subMessage="Error", title="We're Sorry", endpoint = "Endpoi
         except:
             helpersLogger.error("Unable to get endpoint in apology function")
             endpoint = "index"
-    elif enpoint == "review":
+    elif endpoint == "review":
         endpoint = "index"
 
     return render_template("error.html", title=title, message=message, subMessage=subMessage,
