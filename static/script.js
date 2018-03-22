@@ -17,7 +17,11 @@ $(document).ready(function() {
       // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
       $('html, body').animate({
         scrollTop: $(hash).offset().top
-      }, 1000);
+      }, 1000, function() {
+
+        // Add hash (#) to URL when done scrolling (default click behavior)
+        window.location.hash = hash;
+      });
     } // End if
   });
 
@@ -74,14 +78,20 @@ $(document).ready(function() {
   var validated = false;
   var formName = "#"
 
-  $("#submit").click(function() {
-    formName.append($(this).parents("form").attr('id'))
-    if (validated == false) {
-      $(formName).validator('validate');
-    } else {
-      $(formName).submit();
-    }
-  });
+});
+
+function submitValidate() {
+  var validated = false;
+  var formName = "#"
+
+  formName.append($(this).parents('form').attr('id'))
+
+  if (validated == false) {
+    $(formName).validator('validate');
+  } else {
+    $(formName).submit();
+    formName = "#";
+  }
 
   $(formName).on("invalid.bs.validator", function() {
     $("#submit").css('opacity', 0.5);
@@ -95,7 +105,7 @@ $(document).ready(function() {
     validated = true;
   });
 
-});
+}
 
 function search(query, syncResults, asyncResults) {
 

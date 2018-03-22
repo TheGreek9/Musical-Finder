@@ -43,7 +43,7 @@
 <div class="container sections" id="newsongSection">
   <div class="row">
     <div class="hello">
-      <form data-toggle="validator" action="{{url_for('newsong')}}" autocomplete="off" method="post" id="newform">
+      <form data-toggle="validator" action="{{url_for('newsong')}}" autocomplete="off" method="post" id="newSongForm">
         <h3 align="center">Add A Song!</h3>
         <div class="form-group">
           <label for="songName" class="control-label">Song Choice</label>
@@ -91,15 +91,14 @@
           <label for="sheetMusic">Sheet Music:</label>
           <input class="form-control" id="sheetMusic" name="sheetMusic" placeholder="Sheet Music (optional)" type="url" />
         </div>
-        <form action="">
+        <div class="form-group">
           <input type="radio" name="musicalNon" value="Musical" checked> Musical
           <input type="radio" name="musicalNon" value="Non Musical"> Non Musical<br>
-        </form>
+        </div>
         <br>
         <div class="form-group">
           <a href="{{url_for('index')}}" class="btn btn-primary">Go Back</a>
-          <a href="{{url_for('newmusical')}}" class="btn btn-primary">Add New Musical</a>
-          <button class="btn btn-primary" type="submit" id="submit">Add Song</button>
+          <button class="btn btn-primary" onclick="submitValidate()" type="submit">Add Song</button>
         </div>
       </form>
     </div>
@@ -109,7 +108,7 @@
 <div class="container sections" id="newmusicalSection">
   <div class="row">
     <div class="hello">
-      <form data-toggle="validator" action="{{url_for('newmusical')}}" autocomplete="off" method="post" id="newform">
+      <form data-toggle="validator" action="{{url_for('newmusical')}}" autocomplete="off" method="post" id="newMusicalForm">
         <h3 align="center">Add A Musical!</h3>
         <div class="form-group">
           <label for="muscialName" class="control-label">Musical Name:</label>
@@ -144,7 +143,7 @@
         </div>
         <div class="form-group">
           <a href="{{url_for('index')}}" class="btn btn-primary">Go Back</a>
-          <button class="btn btn-primary" id="submit" type="submit">Add Musical</button>
+          <button class="btn btn-primary" onclick="submitValidate()" type="submit">Add Musical</button>
         </div>
       </form>
     </div>
