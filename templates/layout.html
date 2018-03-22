@@ -61,7 +61,11 @@
                     </div>
                     <div class="collapse navbar-collapse" id="myNavbar">
                             <ul class="nav navbar-nav">
-                                <li><a href="{{ url_for('index') }}">Search</a></li>
+          {% if request.endpoint == 'index' %}
+            <li><a href="#searchSection">Search</a></li>
+          {% else %}
+          <li><a href="{{url_for('index')}}">Search</a></li>
+          {% endif %}
           <li><a href="#newsongSection">Add A New Song</a></li>
           <li><a href="#newmusicalSection">Add A New Musical</a></li>
           <!--<li><a href="#aboutSection">About Us</a></li>-->
