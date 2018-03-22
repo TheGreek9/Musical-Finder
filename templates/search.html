@@ -1,9 +1,10 @@
 {% extends "layout.html" %} {% block main %}
-<h1 align="center" id="title">Showbiz Song Search!</h1>
-<div class="container" id="outer_container">
+<div class="container sections" id="searchSection">
+  <h1 align="center" id="title">Showbiz Song Search!</h1>
+  <div style="min-height:50px"></div>
   <div class="row">
     <div class="hello">
-      <form data-toggle="validator" autocomplete="off" method="post" id="newForm">
+      <form data-toggle="validator" action="{{url_for('index')}}" autocomplete="off" method="post" id="newForm">
         <fieldset>
           <h4>What are you auditioning for?</h4>
           <div class="form-group">
@@ -37,5 +38,130 @@
       </form>
     </div>
   </div>
+</div>
+<div class="space"></div>
+<div class="container sections" id="newsongSection">
+  <div class="row">
+    <div class="hello">
+      <form data-toggle="validator" action="{{url_for('newsong')}}" autocomplete="off" method="post" id="newSongForm">
+        <h3 align="center">Add A Song!</h3>
+        <div class="form-group">
+          <label for="songName" class="control-label">Song Choice</label>
+          <input class="form-control" id="songName" name="songName" placeholder="Song Name" type="text" data-error="Please input
+              your song choice" required>
+          <div class="help-block with-errors"></div>
+        </div>
+        <div class="form-group">
+          <label for="newMusical" class="control-label">Musical Auditioning For:</label>
+          <input class="form-control" id="newMusical" name="newMusical" placeholder="Musical" type="text" / data-error="Please input
+              musical you are auditioning for" data-html=true required>
+          <div class="help-block with-errors"></div>
+        </div>
+        <div class="form-group">
+          <label for="role" class="control-label">Role To Add Song To:</label>
+          <input class="form-control" id="role" name="role" placeholder="Role" type="text" data-error="Please input the role you
+              would like to add the song to" required>
+          <div class="help-block with-errors"></div>
+        </div>
+        <div class="form-group">
+          <label for="singer" class="control-label">Singer:</label>
+          <input class="form-control" id="singer" name="singer" placeholder="Singer" type="text" data-error="Please
+              add the singer associated with the song">
+          <div class="help-block with-errors"></div>
+        </div>
+        <div class="form-group">
+          <label for="artist" class="control-label">Artist:</label>
+          <input class="form-control" id="artist" name="artist" placeholder="Artist" type="text" data-error="Please
+              add the artist associated with the song">
+          <div class="help-block with-errors"></div>
+        </div>
+        <div class="form-group">
+          <label for="genre">Genre:</label>
+          <input class="form-control" id="genre" name="genre" placeholder="Genre (optional)" type="text" />
+        </div>
+        <div class="form-group">
+          <label for="originalMusical">Original Musical:</label>
+          <input class="form-control" id="originalMusical" name="originalMusical" placeholder="Original Musical (optional)" type="text" />
+        </div>
+        <div class="form-group">
+          <label for="composer">Composer:</label>
+          <input class="form-control" id="composer" name="composer" placeholder="Composer (optional)" type="text" />
+        </div>
+        <div class="form-group">
+          <label for="sheetMusic">Sheet Music:</label>
+          <input class="form-control" id="sheetMusic" name="sheetMusic" placeholder="Sheet Music (optional)" type="url" />
+        </div>
+        <div class="form-group">
+          <input type="radio" name="musicalNon" value="Musical" checked> Musical
+          <input type="radio" name="musicalNon" value="Non Musical"> Non Musical<br>
+        </div>
+        <br>
+        <div class="form-group">
+          <a href="{{url_for('index')}}" class="btn btn-primary">Go Back</a>
+          <button class="btn btn-primary" onclick="submitValidate()" type="submit">Add Song</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="space"></div>
+<div class="container sections" id="newmusicalSection">
+  <div class="row">
+    <div class="hello">
+      <form data-toggle="validator" action="{{url_for('newmusical')}}" autocomplete="off" method="post" id="newMusicalForm">
+        <h3 align="center">Add A Musical!</h3>
+        <div class="form-group">
+          <label for="muscialName" class="control-label">Musical Name:</label>
+          <input class="form-control" id="musicalName" name="musicalName" placeholder="Musical Name" type="text" data-error="Please enter the name of the musical" required>
+          <div class="help-block with-errors"></div>
+        </div>
+        <div class="form-group">
+          <label for="playwright" class="control-label">Playwright:</label>
+          <input class="form-control" id="playwright" name="playwright" placeholder="Playwright" type="text" data-error="Please enter the name of the playwright for the musical" required>
+          <div class="help-block with-errors"></div>
+        </div>
+        <div class="form-group">
+          <label for="musicalComposer" class="control-label">Composer:</label>
+          <input class="form-control" id="musicalComposer" name="musicalComposer" placeholder="Composer" type="text" data-error="Please enter the name of the composer for the musical" required>
+          <div class="help-block with-errors"></div>
+        </div>
+        <div class="form-group">
+          <label for="lyricist" class="control-label">Lyricist:</label>
+          <input class="form-control" id="lyricist" name="lyricist" placeholder="Lyricist (optional)" type="text">
+        </div>
+        <div class="form-group">
+          <label for="genre" class="control-label">Genre:</label>
+          <input class="form-control" id="musicalGenre" name="musicalGenre" placeholder="Genre (optional)" type="text">
+        </div>
+        <div class="form-group">
+          <label for="productionYear" class="control-label">Production Year:</label>
+          <input class="form-control" id="productionYear" name="productionYear" placeholder="Production Year (optional)" type="text">
+        </div>
+        <div class="form-group">
+          <label for="plot" class="control-label">Plot:</label>
+          <input class="form-control" id="plot" name="plot" placeholder="Plot (optional)" type="text">
+        </div>
+        <div class="form-group">
+          <a href="{{url_for('index')}}" class="btn btn-primary">Go Back</a>
+          <button class="btn btn-primary" onclick="submitValidate()" type="submit">Add Musical</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div style="min-height: 180px;"></div>
+<div class="container sections" id="aboutSection">
+  <!--  <div class="row">
+    <div class="col-md-4">
+      <img class="profiles" src="https://upload.wikimedia.org/wikipedia/commons/5/51/Mr._Smiley_Face.svg" alt="smiley">
+      <br>
+      <p>Spyro is a self taught programmer</p>
+    </div>
+    <div class="col-md-4 col-md-offset-4">
+      <img class="profiles" src="https://upload.wikimedia.org/wikipedia/commons/5/51/Mr._Smiley_Face.svg" alt="smiley">
+      <br>
+      <p>Spyro is a self taught programmer</p>
+    </div>
+  </div>-->
 </div>
 {% endblock %}
