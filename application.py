@@ -4,7 +4,6 @@ import logging.config
 from flask import Flask, jsonify, redirect, render_template, request, url_for, session
 from flask_jsglue import JSGlue
 from flask_session import Session
-from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
 from flask_bcrypt import Bcrypt
 from flaskext.mysql import MySQL
@@ -212,34 +211,36 @@ def logout():
     return redirect(url_for("index"))
 
 @app.route("/newsong", methods=["GET", "POST"])
-@login_required
 def newsong():
     if request.method == "POST":
 
         idData = Musicals().get_Id(request.form.get("newMusical"))
 
-        if idDate == -1:
-            return apology("We were unable to find that mucsical")
+        if idData == -1:
+            return apology("We were unable to find that musical")
 
-        Songs('pending').create_song(request.form, idData['Id'], session["user_id"])
+        #Songs('pending').create_song(request.form, idData['Id'], session["user_id"])
+
+        Songs('pending').create_song(request.form, idData['Id'], 1)
 
         email_spyro("There's a new song addition to the database", "http://thegreek9.pythonanywhere.com/login?next=review")
 
-        return render_template("submissionconfirm.html", newitem="newsong")
+        return render_template("submissionconfirm.html", newitem="http://127.0.0.1:5000/#newsongSection")
 
     else:
         return render_template("newsong.html")
 
 @app.route("/newmusical", methods=["GET", "POST"])
-@login_required
 def newmusical():
     if request.method == "POST":
 
-        Musicals('pending').create_musical(request.form, session["user_id"])
+        #Musicals('pending').create_musical(request.form, session["user_id"])
+
+        Musicals('pending').create_musical(request.form, 1)
 
         email_spyro("There's a new musical addition to the database", "http://thegreek9.pythonanywhere.com/login?next=review")
 
-        return render_template("submissionconfirm.html", newitem="newmusical")
+        return render_template("submissionconfirm.html", newitem="http://127.0.0.1:5000/#newmusicalSection")
 
     else:
 
