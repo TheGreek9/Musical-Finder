@@ -9,22 +9,25 @@ $(document).ready(function() {
   $("#myNavbar").find("a").on('click', function(event) {
     // Make sure this.hash has a value before overriding default behavior
     if ($(this).prop("hash") !== "") {
-      // Prevent default anchor click behavior
-      event.preventDefault();
+      if (window.location.pathname != "/") {
+        localStorage.setItem("hash", $(this).prop("hash"));
+        document.location.href = "/"
+
+      } else {
+        // Prevent default anchor click behavior
+        event.preventDefault();
+        localStorage.setItem("hash", "");
+      }
 
       var hash = $(this).prop("hash")
-      // Using jQuery's animate() method to add smooth page scroll
-      // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
-      $('html, body').animate({
-        scrollTop: $(hash).offset().top
-      }, 1000, function() {
 
-        // Add hash (#) to URL when done scrolling (default click behavior)
-        window.location.hash = hash;
-      });
-    } // End if
+      SmoothScroll(hash);
+    }
   });
 
+  if (window.location.pathname == "/") {
+    CheckLocalHash();
+  }
 
   $.fn.validator.Constructor.FOCUS_OFFSET = '100';
   var newsongMusical = ""
@@ -79,6 +82,28 @@ $(document).ready(function() {
   var formName = "#"
 
 });
+
+function SmoothScroll(hash) {
+  // Using jQuery's animate() method to add smooth page scroll
+  // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+  $('html, body').animate({
+    scrollTop: $(hash).offset().top
+  }, 1000, function() {
+
+    // Add hash (#) to URL when done scrolling (default click behavior)
+    window.location.hash = hash;
+  });
+}
+
+function CheckLocalHash() {
+  hash = localStorage.getItem("hash");
+  console.log("hash: " + hash)
+  console.log(hash != "")
+  if (hash != "") {
+    SmoothScroll(hash);
+    localStorage.setItem("hash", "");
+  }
+}
 
 function submitValidate() {
   var validated = false;

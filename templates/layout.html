@@ -45,30 +45,24 @@
 </head>
 
 <body>
-
   <div class="container">
-
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
           <button aria-expanded="false" class="navbar-toggle collapsed" data-target="#myNavbar" data-toggle="collapse" type="button">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-          <a class="navbar-brand"><span>Showbiz Song Search</span>
-                    </div>
-                    <div class="collapse navbar-collapse" id="myNavbar">
-                            <ul class="nav navbar-nav">
-          {% if request.endpoint == 'index' %}
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand"><span>Showbiz Song Search</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav">
             <li><a href="#searchSection">Search</a></li>
-          {% else %}
-          <li><a href="{{url_for('index')}}">Search</a></li>
-          {% endif %}
-          <li><a href="#newsongSection">Add A New Song</a></li>
-          <li><a href="#newmusicalSection">Add A New Musical</a></li>
-          <!--<li><a href="#aboutSection">About Us</a></li>-->
+            <li><a href="#newsongSection">Add A New Song</a></li>
+            <li><a href="#newmusicalSection">Add A New Musical</a></li>
+            <!--<li><a href="#aboutSection">About Us</a></li>-->
           </ul>
           {% if session.user_id %}
           <ul class="nav navbar-nav navbar-right">
@@ -97,9 +91,7 @@
     <main>
       {% block main %}{% endblock %}
     </main>
-
   </div>
-
 </body>
 
 </html>
