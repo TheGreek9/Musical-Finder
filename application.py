@@ -112,10 +112,20 @@ def index():
     else:
         try:
             test_connection()
-            return render_template("search.html")
         except Exception:
             return apology("There was a problem connecting to our database", "Error", "We're Sorry", None)
 
+        try:
+            return render_template("search.html")
+        except:
+            baseLogger.exception("Unable to render search.html")
+            return apology("There was a problem connecting to our site", "Error", "We're Sorry", None)
+
+@app.route("/allmusicals", methods=["GET"])
+def allmusicals():
+    musicalList = Musicals().query_table()
+
+    return render_template("allresults.html", musicalList=musicalList)
 
 @app.route("/changepassword", methods=["GET", "POST"])
 @login_required
